@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PlanerDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Collaborators">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="DefaultPermission" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nodes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="NodeId" Type="int" Nullable="false" />
+          <Property Name="PermissionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PermissionTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Owner" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="NodeId" Type="int" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Collaborators_PermissionTypes">
+          <End Role="PermissionTypes" Type="Self.PermissionTypes" Multiplicity="1" />
+          <End Role="Collaborators" Type="Self.Collaborators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PermissionTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collaborators">
+              <PropertyRef Name="DefaultPermission" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Collaborators_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Collaborators" Type="Self.Collaborators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collaborators">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Collaborators_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Collaborators" Type="Self.Collaborators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collaborators">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nodes_Nodes">
+          <End Role="Nodes" Type="Self.Nodes" Multiplicity="0..1" />
+          <End Role="Nodes1" Type="Self.Nodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nodes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nodes1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nodes_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Nodes" Type="Self.Nodes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nodes">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_Nodes">
+          <End Role="Nodes" Type="Self.Nodes" Multiplicity="1" />
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nodes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_PermissionTypes">
+          <End Role="PermissionTypes" Type="Self.PermissionTypes" Multiplicity="1" />
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PermissionTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Nodes">
+          <End Role="Nodes" Type="Self.Nodes" Multiplicity="0..1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nodes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PlanerDatabaseModelStoreContainer">
+          <EntitySet Name="Collaborators" EntityType="Self.Collaborators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nodes" EntityType="Self.Nodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PermissionTypes" EntityType="Self.PermissionTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Collaborators_PermissionTypes" Association="Self.FK_Collaborators_PermissionTypes">
+            <End Role="PermissionTypes" EntitySet="PermissionTypes" />
+            <End Role="Collaborators" EntitySet="Collaborators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Collaborators_Projects" Association="Self.FK_Collaborators_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Collaborators" EntitySet="Collaborators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Collaborators_Users" Association="Self.FK_Collaborators_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Collaborators" EntitySet="Collaborators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nodes_Nodes" Association="Self.FK_Nodes_Nodes">
+            <End Role="Nodes" EntitySet="Nodes" />
+            <End Role="Nodes1" EntitySet="Nodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nodes_Projects" Association="Self.FK_Nodes_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Nodes" EntitySet="Nodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Nodes" Association="Self.FK_Permissions_Nodes">
+            <End Role="Nodes" EntitySet="Nodes" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_PermissionTypes" Association="Self.FK_Permissions_PermissionTypes">
+            <End Role="PermissionTypes" EntitySet="PermissionTypes" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Users" Association="Self.FK_Permissions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Users" Association="Self.FK_Projects_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Nodes" Association="Self.FK_Tasks_Nodes">
+            <End Role="Nodes" EntitySet="Nodes" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Projects" Association="Self.FK_Tasks_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PlanerDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PlanerDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Collaborators" EntityType="PlanerDatabaseModel.Collaborator" />
+          <EntitySet Name="Nodes" EntityType="PlanerDatabaseModel.Node" />
+          <EntitySet Name="Permissions" EntityType="PlanerDatabaseModel.Permission" />
+          <EntitySet Name="PermissionTypes" EntityType="PlanerDatabaseModel.PermissionType" />
+          <EntitySet Name="Projects" EntityType="PlanerDatabaseModel.Project" />
+          <EntitySet Name="Tasks" EntityType="PlanerDatabaseModel.Task" />
+          <EntitySet Name="Users" EntityType="PlanerDatabaseModel.User" />
+          <AssociationSet Name="FK_Collaborators_PermissionTypes" Association="PlanerDatabaseModel.FK_Collaborators_PermissionTypes">
+            <End Role="PermissionType" EntitySet="PermissionTypes" />
+            <End Role="Collaborator" EntitySet="Collaborators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Collaborators_Projects" Association="PlanerDatabaseModel.FK_Collaborators_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Collaborator" EntitySet="Collaborators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Collaborators_Users" Association="PlanerDatabaseModel.FK_Collaborators_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Collaborator" EntitySet="Collaborators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nodes_Nodes" Association="PlanerDatabaseModel.FK_Nodes_Nodes">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="Node1" EntitySet="Nodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Nodes_Projects" Association="PlanerDatabaseModel.FK_Nodes_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Node" EntitySet="Nodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Nodes" Association="PlanerDatabaseModel.FK_Permissions_Nodes">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Nodes" Association="PlanerDatabaseModel.FK_Tasks_Nodes">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_PermissionTypes" Association="PlanerDatabaseModel.FK_Permissions_PermissionTypes">
+            <End Role="PermissionType" EntitySet="PermissionTypes" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Users" Association="PlanerDatabaseModel.FK_Permissions_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Users" Association="PlanerDatabaseModel.FK_Projects_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Projects" Association="PlanerDatabaseModel.FK_Tasks_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Collaborator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="DefaultPermission" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PermissionType" Relationship="PlanerDatabaseModel.FK_Collaborators_PermissionTypes" FromRole="Collaborator" ToRole="PermissionType" />
+          <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Collaborators_Projects" FromRole="Collaborator" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="PlanerDatabaseModel.FK_Collaborators_Users" FromRole="Collaborator" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Node">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Children" Relationship="PlanerDatabaseModel.FK_Nodes_Nodes" FromRole="Node" ToRole="Node1" />
+          <NavigationProperty Name="Parent" Relationship="PlanerDatabaseModel.FK_Nodes_Nodes" FromRole="Node1" ToRole="Node" />
+          <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Nodes_Projects" FromRole="Node" ToRole="Project" />
+          <NavigationProperty Name="Permissions" Relationship="PlanerDatabaseModel.FK_Permissions_Nodes" FromRole="Node" ToRole="Permission" />
+          <NavigationProperty Name="Tasks" Relationship="PlanerDatabaseModel.FK_Tasks_Nodes" FromRole="Node" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="NodeId" Type="Int32" Nullable="false" />
+          <Property Name="PermissionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Node" Relationship="PlanerDatabaseModel.FK_Permissions_Nodes" FromRole="Permission" ToRole="Node" />
+          <NavigationProperty Name="PermissionType" Relationship="PlanerDatabaseModel.FK_Permissions_PermissionTypes" FromRole="Permission" ToRole="PermissionType" />
+          <NavigationProperty Name="User" Relationship="PlanerDatabaseModel.FK_Permissions_Users" FromRole="Permission" ToRole="User" />
+        </EntityType>
+        <EntityType Name="PermissionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Collaborators" Relationship="PlanerDatabaseModel.FK_Collaborators_PermissionTypes" FromRole="PermissionType" ToRole="Collaborator" />
+          <NavigationProperty Name="Permissions" Relationship="PlanerDatabaseModel.FK_Permissions_PermissionTypes" FromRole="PermissionType" ToRole="Permission" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Owner" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Collaborators" Relationship="PlanerDatabaseModel.FK_Collaborators_Projects" FromRole="Project" ToRole="Collaborator" />
+          <NavigationProperty Name="Nodes" Relationship="PlanerDatabaseModel.FK_Nodes_Projects" FromRole="Project" ToRole="Node" />
+          <NavigationProperty Name="User" Relationship="PlanerDatabaseModel.FK_Projects_Users" FromRole="Project" ToRole="User" />
+          <NavigationProperty Name="Tasks" Relationship="PlanerDatabaseModel.FK_Tasks_Projects" FromRole="Project" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="NodeId" Type="Int32" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Node" Relationship="PlanerDatabaseModel.FK_Tasks_Nodes" FromRole="Task" ToRole="Node" />
+          <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Tasks_Projects" FromRole="Task" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Collaborators" Relationship="PlanerDatabaseModel.FK_Collaborators_Users" FromRole="User" ToRole="Collaborator" />
+          <NavigationProperty Name="Permissions" Relationship="PlanerDatabaseModel.FK_Permissions_Users" FromRole="User" ToRole="Permission" />
+          <NavigationProperty Name="Projects" Relationship="PlanerDatabaseModel.FK_Projects_Users" FromRole="User" ToRole="Project" />
+        </EntityType>
+        <Association Name="FK_Collaborators_PermissionTypes">
+          <End Type="PlanerDatabaseModel.PermissionType" Role="PermissionType" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Collaborator" Role="Collaborator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PermissionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collaborator">
+              <PropertyRef Name="DefaultPermission" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Collaborators_Projects">
+          <End Type="PlanerDatabaseModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Collaborator" Role="Collaborator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collaborator">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Collaborators_Users">
+          <End Type="PlanerDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Collaborator" Role="Collaborator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Collaborator">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nodes_Nodes">
+          <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="0..1" />
+          <End Type="PlanerDatabaseModel.Node" Role="Node1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Node1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Nodes_Projects">
+          <End Type="PlanerDatabaseModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Node">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_Nodes">
+          <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Permission" Role="Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Nodes">
+          <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="0..1" />
+          <End Type="PlanerDatabaseModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_PermissionTypes">
+          <End Type="PlanerDatabaseModel.PermissionType" Role="PermissionType" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Permission" Role="Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PermissionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_Users">
+          <End Type="PlanerDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Permission" Role="Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Users">
+          <End Type="PlanerDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Projects">
+          <End Type="PlanerDatabaseModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PlanerDatabaseModelStoreContainer" CdmEntityContainer="PlanerDatabaseEntities">
+          <EntitySetMapping Name="Collaborators">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Collaborator">
+              <MappingFragment StoreEntitySet="Collaborators">
+                <ScalarProperty Name="DefaultPermission" ColumnName="DefaultPermission" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nodes">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Node">
+              <MappingFragment StoreEntitySet="Nodes">
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Permission">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionTypes">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.PermissionType">
+              <MappingFragment StoreEntitySet="PermissionTypes">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Task">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

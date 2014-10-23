@@ -2,7 +2,7 @@
         x:Name="loginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:viewModels="clr-namespace:Planer.ViewModels"
+        xmlns:helper="clr-namespace:Planer.Helpers"
         Title="Login Window" Height="136" Width="327"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -21,10 +21,11 @@
         
         <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" VerticalAlignment="Top" Margin="5"/>
         <TextBlock Text="{Binding ValidationError}" Grid.Column="1" Margin="5,22,0,0" FontSize="10" FontWeight="Bold" Foreground="Red"/>
-        <PasswordBox Name="v_PasswordBox" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Margin="5"/>
+        <PasswordBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Margin="5"
+                     helper:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" helper:PasswordHelper.Attach="True"/>
 
         <Button Click="CancelButton_Click" IsCancel="True" Content="Cancel" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Button Command="{Binding LoginClick}" CommandParameter="{Binding ElementName=v_PasswordBox}" IsDefault="True" Content="Login" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Button Command="{Binding LoginClick}" IsDefault="True" Content="Login" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         
         <Button Command="{Binding RegisterClick}"
                 Foreground="Blue" Background="Transparent" BorderBrush="Transparent"

@@ -81,7 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\MultiValueConverter.cs" />
+    <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="ViewModels\RegisterWindowViewModel.cs" />
     <Compile Include="Views\RegisterWindow.xaml.cs">
@@ -145,6 +145,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Converters\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
   </ItemGroup>

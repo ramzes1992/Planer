@@ -24,6 +24,19 @@ namespace Model.Repositories
             }
         }
 
+        public void Add(string UserName, string HASH_PASSWORD_CHECKSUM)
+        {
+            User newUser = new User();
+            newUser.Name = UserName;
+            newUser.Password = HASH_PASSWORD_CHECKSUM;
+
+            if (newUser != null)
+            {
+                entities.Users.Add(newUser);
+                entities.SaveChanges();
+            }
+        }
+
         public User GetUserByName(string userName)
         {
             return entities.Users.Single(u => u.Name.Equals(userName));
@@ -32,6 +45,13 @@ namespace Model.Repositories
         public bool Login(string userName, string password)
         {
             return entities.Users.Any(u => u.Name.Equals(userName) && u.Password.Equals(password));
+        }
+
+        public bool Exists(string userName)
+        {
+            var user = entities.Users.SingleOrDefault(u => u.Name.Equals(userName));
+
+            return user != null;
         }
     }
 }

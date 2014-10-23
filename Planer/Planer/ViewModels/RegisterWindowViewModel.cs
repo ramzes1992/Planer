@@ -14,6 +14,7 @@ namespace Planer.ViewModels
     {
         #region Properties
 
+        #region User Name
         private string _userName;
         public string UserName
         {
@@ -23,15 +24,18 @@ namespace Planer.ViewModels
             }
             set
             {
-                if(value != _userName)
+                if (value != _userName)
                 {
                     _userName = value;
                     RaisePropertyChanged(() => UserName);
                     RegisterClick.RaiseCanExecuteChanged();
+                    ValidationError = string.Empty;
                 }
             }
         }
+        #endregion
 
+        #region Password
         private string _password;
         public string Password
         {
@@ -42,7 +46,7 @@ namespace Planer.ViewModels
 
             set
             {
-                if(_password != value)
+                if (_password != value)
                 {
                     _password = value;
                     RaisePropertyChanged(() => Password);
@@ -50,7 +54,9 @@ namespace Planer.ViewModels
                 }
             }
         }
+        #endregion
 
+        #region Confirm Password
         private string _confirmPassword;
         public string ConfirmPassword
         {
@@ -60,7 +66,7 @@ namespace Planer.ViewModels
             }
             set
             {
-                if(value != _confirmPassword)
+                if (value != _confirmPassword)
                 {
                     _confirmPassword = value;
                     RaisePropertyChanged(() => ConfirmPassword);
@@ -70,9 +76,24 @@ namespace Planer.ViewModels
         }
         #endregion
 
-        #region Commands
-
-        public DelegateCommand RegisterClick { get; private set; }
+        #region Validation Error Message
+        private string _validationError;
+        public string ValidationError
+        {
+            get
+            {
+                return _validationError;
+            }
+            set
+            {
+                if (value != _validationError)
+                {
+                    _validationError = value;
+                    RaisePropertyChanged(() => ValidationError);
+                }
+            }
+        }
+        #endregion
 
         #endregion
 
@@ -84,9 +105,40 @@ namespace Planer.ViewModels
 
         #endregion
 
+        #region Commands
+
+        #region Register Click
+        public DelegateCommand RegisterClick { get; private set; }
+
+        private bool RegisterCanExecute()
+        {
+            return !string.IsNullOrWhiteSpace(UserName)
+                && !string.IsNullOrWhiteSpace(Password)
+                && Password.Equals(ConfirmPassword);
+        }
+
+        private void RegisterExecute()
+        {
+            var hash = Helpers.HashHelper.GetHashAsGuid(Password).ToString();
+
+            if (!_userRepository.Exists(UserName))
+            {
+                _userRepository.Add(UserName, hash);
+                _view.DialogResult = true;
+                _view.Close();
+            }
+            else
+            {
+                ValidationError = "User Name already in use.";
+            }
+        }
+        #endregion
+
+        #endregion
+
         #region Ctor
 
-        public RegisterWindowViewModel(Window view,UserRepository userRepo)
+        public RegisterWindowViewModel(Window view, UserRepository userRepo)
         {
             _userRepository = userRepo;
             _view = view;
@@ -94,20 +146,11 @@ namespace Planer.ViewModels
             RegisterClick = new DelegateCommand(RegisterExecute, RegisterCanExecute);
         }
 
-        private bool RegisterCanExecute()
-        {
-            return string.IsNullOrWhiteSpace(UserName)
-                && !string.IsNullOrWhiteSpace(Password)
-                && Password.Equals(ConfirmPassword);
-        }
+        #endregion
 
-        private void RegisterExecute()
-        {
-            //TODO: LOGIKA!!
+        #region private Methods
 
-            _view.Close();
-        }
-
+        
 
         #endregion
 

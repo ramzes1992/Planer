@@ -33,10 +33,34 @@ namespace Planer.ViewModels
                 {
                     _userName = value;
                     RaisePropertyChanged(() => UserName);
+                    LoginClick.RaiseCanExecuteChanged();
                     ValidationError = string.Empty;
                 }
             }
         }
+        #endregion
+
+        #region Password
+
+        private string _password;
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                if (_password != value)
+                {
+                    _password = value;
+                    RaisePropertyChanged(() => Password);
+                    LoginClick.RaiseCanExecuteChanged();
+                    ValidationError = string.Empty;
+                }
+            }
+        }
+
         #endregion
 
         #region Validation Error Message
@@ -49,7 +73,7 @@ namespace Planer.ViewModels
             }
             set
             {
-                if(value != _validationError)
+                if (value != _validationError)
                 {
                     _validationError = value;
                     RaisePropertyChanged(() => ValidationError);
@@ -60,32 +84,29 @@ namespace Planer.ViewModels
 
         #endregion
 
+        #region Members
+
+        private static readonly UserRepository _userRepository = new UserRepository();
+
+        private Window _view;
+
+        #endregion
+
         #region Commands
 
-        public DelegateCommand<PasswordBox> LoginClick { get; private set; }
+        #region Login Click
+        public DelegateCommand LoginClick { get; private set; }
 
-        public DelegateCommand RegisterClick { get; private set; }
-
-        #endregion
-
-        #region Ctor
-        public LoginWindowViewModel(Window view)
+        private bool LoginCanExecute()
         {
-            LoginClick = new DelegateCommand<PasswordBox>(LoginExecute);
-
-            RegisterClick = new DelegateCommand(RegisterExecute);
-
-            _userRepository.Login(string.Empty, string.Empty);// quick connection with database
-
-            _view = view;
+            return !string.IsNullOrWhiteSpace(UserName)
+                && !string.IsNullOrEmpty(Password);
         }
-        #endregion
 
-        private void LoginExecute(PasswordBox passwordBox)
+        private void LoginExecute()
         {
-            var password = passwordBox.Password;
-
-            if (_userRepository.Login(UserName, password))
+            var hash = Helpers.HashHelper.GetHashAsGuid(Password).ToString();
+            if (_userRepository.Login(UserName, hash))
             {
                 _view.DialogResult = true;
                 _view.Close();
@@ -96,6 +117,11 @@ namespace Planer.ViewModels
             }
         }
 
+        #endregion
+
+        #region Register Click
+        public DelegateCommand RegisterClick { get; private set; }
+
         private void RegisterExecute()
         {
             Window registerView = new RegisterWindow();
@@ -105,15 +131,39 @@ namespace Planer.ViewModels
             registerView.DataContext = registerViewModel;
 
             var result = registerView.ShowDialog();
-            //TODO: zaloguj jeśli zarejetrowano
+
+            if (result ?? false)
+            {
+                ValidationError = string.Empty;
+                UserName = registerViewModel.UserName;
+                Password = string.Empty;
+            }
         }
 
-        #region Members
-
-        private static readonly UserRepository _userRepository = new UserRepository();
-
-        private Window _view;
+        #endregion
 
         #endregion
+
+        #region Ctor
+
+        public LoginWindowViewModel(Window view)
+        {
+            LoginClick = new DelegateCommand(LoginExecute, LoginCanExecute);
+
+            RegisterClick = new DelegateCommand(RegisterExecute);
+
+            _userRepository.Login(string.Empty, string.Empty);// to speedup connection with database
+
+            _view = view;
+        }
+
+        #endregion
+
+        #region private Methods
+
+
+
+        #endregion
+
     }
 }

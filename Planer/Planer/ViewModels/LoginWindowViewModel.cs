@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows;
 using Model.Repositories;
+using Planer.Views;
 
 namespace Planer.ViewModels
 {
@@ -32,6 +33,26 @@ namespace Planer.ViewModels
                 {
                     _userName = value;
                     RaisePropertyChanged(() => UserName);
+                    ValidationError = string.Empty;
+                }
+            }
+        }
+        #endregion
+
+        #region Validation Error Message
+        private string _validationError;
+        public string ValidationError
+        {
+            get
+            {
+                return _validationError;
+            }
+            set
+            {
+                if(value != _validationError)
+                {
+                    _validationError = value;
+                    RaisePropertyChanged(() => ValidationError);
                 }
             }
         }
@@ -43,12 +64,16 @@ namespace Planer.ViewModels
 
         public DelegateCommand<PasswordBox> LoginClick { get; private set; }
 
+        public DelegateCommand RegisterClick { get; private set; }
+
         #endregion
 
         #region Ctor
         public LoginWindowViewModel(Window view)
         {
             LoginClick = new DelegateCommand<PasswordBox>(LoginExecute);
+
+            RegisterClick = new DelegateCommand(RegisterExecute);
 
             _userRepository.Login(string.Empty, string.Empty);// quick connection with database
 
@@ -67,9 +92,20 @@ namespace Planer.ViewModels
             }
             else
             {
-                //TODO: MessageBox Invalid Login or Password
+                ValidationError = "User Name or Password is incorrect.";
             }
+        }
 
+        private void RegisterExecute()
+        {
+            Window registerView = new RegisterWindow();
+            RegisterWindowViewModel registerViewModel = new RegisterWindowViewModel(registerView, _userRepository);
+
+            registerView.Owner = _view;
+            registerView.DataContext = registerViewModel;
+
+            var result = registerView.ShowDialog();
+            //TODO: zaloguj jeśli zarejetrowano
         }
 
         #region Members

@@ -4,21 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.Practices.Prism.Commands;
-using System.Security;
-using System.Diagnostics;
-using System.Windows.Controls;
-using System.Windows;
 using Model.Repositories;
-using Planer.Views;
+using Microsoft.Practices.Prism.Commands;
+using System.Windows;
 
 namespace Planer.ViewModels
 {
-    public class LoginWindowViewModel : BaseViewModel
+    public class RegisterViewModel : BaseViewModel
     {
         #region Properties
 
-        #region UserName
+        #region User Name
         private string _userName;
         public string UserName
         {
@@ -26,14 +22,13 @@ namespace Planer.ViewModels
             {
                 return _userName;
             }
-
             set
             {
                 if (value != _userName)
                 {
                     _userName = value;
                     RaisePropertyChanged(() => UserName);
-                    LoginClick.RaiseCanExecuteChanged();
+                    RegisterClick.RaiseCanExecuteChanged();
                     ValidationError = string.Empty;
                 }
             }
@@ -41,7 +36,6 @@ namespace Planer.ViewModels
         #endregion
 
         #region Password
-
         private string _password;
         public string Password
         {
@@ -49,18 +43,37 @@ namespace Planer.ViewModels
             {
                 return _password;
             }
+
             set
             {
                 if (_password != value)
                 {
                     _password = value;
                     RaisePropertyChanged(() => Password);
-                    LoginClick.RaiseCanExecuteChanged();
-                    ValidationError = string.Empty;
+                    RegisterClick.RaiseCanExecuteChanged();
                 }
             }
         }
+        #endregion
 
+        #region Confirm Password
+        private string _confirmPassword;
+        public string ConfirmPassword
+        {
+            get
+            {
+                return _confirmPassword;
+            }
+            set
+            {
+                if (value != _confirmPassword)
+                {
+                    _confirmPassword = value;
+                    RaisePropertyChanged(() => ConfirmPassword);
+                    RegisterClick.RaiseCanExecuteChanged();
+                }
+            }
+        }
         #endregion
 
         #region Validation Error Message
@@ -86,7 +99,7 @@ namespace Planer.ViewModels
 
         #region Members
 
-        private static readonly UserRepository _userRepository = new UserRepository();
+        private UserRepository _userRepository;
 
         private Window _view;
 
@@ -94,74 +107,50 @@ namespace Planer.ViewModels
 
         #region Commands
 
-        #region Login Click
-        public DelegateCommand LoginClick { get; private set; }
+        #region Register Click
+        public DelegateCommand RegisterClick { get; private set; }
 
-        private bool LoginCanExecute()
+        private bool RegisterCanExecute()
         {
             return !string.IsNullOrWhiteSpace(UserName)
-                && !string.IsNullOrEmpty(Password);
+                && !string.IsNullOrWhiteSpace(Password)
+                && Password.Equals(ConfirmPassword);
         }
 
-        private void LoginExecute()
+        private void RegisterExecute()
         {
             var hash = Helpers.HashHelper.GetHashAsGuid(Password).ToString();
-            if (_userRepository.Login(UserName, hash))
+
+            if (!_userRepository.Exists(UserName))
             {
+                _userRepository.Add(UserName, hash);
                 _view.DialogResult = true;
                 _view.Close();
             }
             else
             {
-                ValidationError = "User Name or Password is incorrect.";
+                ValidationError = "User Name already in use.";
             }
         }
-
-        #endregion
-
-        #region Register Click
-        public DelegateCommand RegisterClick { get; private set; }
-
-        private void RegisterExecute()
-        {
-            Window registerView = new RegisterWindow();
-            RegisterWindowViewModel registerViewModel = new RegisterWindowViewModel(registerView, _userRepository);
-
-            registerView.Owner = _view;
-            registerView.DataContext = registerViewModel;
-
-            var result = registerView.ShowDialog();
-
-            if (result ?? false)
-            {
-                ValidationError = string.Empty;
-                UserName = registerViewModel.UserName;
-                Password = string.Empty;
-            }
-        }
-
         #endregion
 
         #endregion
 
         #region Ctor
 
-        public LoginWindowViewModel(Window view)
+        public RegisterViewModel(Window view, UserRepository userRepo)
         {
-            LoginClick = new DelegateCommand(LoginExecute, LoginCanExecute);
-
-            RegisterClick = new DelegateCommand(RegisterExecute);
-
-            _userRepository.Login(string.Empty, string.Empty);// to speedup connection with database
-
+            _userRepository = userRepo;
             _view = view;
+
+            RegisterClick = new DelegateCommand(RegisterExecute, RegisterCanExecute);
         }
 
         #endregion
 
         #region private Methods
 
-
+        
 
         #endregion
 

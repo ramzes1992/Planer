@@ -23,11 +23,11 @@ namespace Model
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Owner { get; set; }
+        public int OwnerId { get; set; }
     
         public virtual ICollection<Collaborator> Collaborators { get; set; }
         public virtual ICollection<Node> Nodes { get; set; }
-        public virtual User User { get; set; }
+        public virtual User Owner { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
     }
 }

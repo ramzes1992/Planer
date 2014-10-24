@@ -4,7 +4,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helper="clr-namespace:Planer.Helpers"
         Title="Login Window" Height="136" Width="327"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=v_TextBox_UserName}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
@@ -19,7 +20,7 @@
         <Label Content="User Name:" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <Label Content="Password:" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1"/>
         
-        <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" VerticalAlignment="Top" Margin="5"/>
+        <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" Name="v_TextBox_UserName" Grid.Column="1" VerticalAlignment="Top" Margin="5"/>
         <TextBlock Text="{Binding ValidationError}" Grid.Column="1" Margin="5,22,0,0" FontSize="10" FontWeight="Bold" Foreground="Red"/>
         <PasswordBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Margin="5"
                      helper:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" helper:PasswordHelper.Attach="True"/>

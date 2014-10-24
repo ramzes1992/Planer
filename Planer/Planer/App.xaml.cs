@@ -22,7 +22,7 @@ namespace Planer
             base.OnStartup(e);
 
             LoginWindow loginWindow = new LoginWindow();
-            LoginWindowViewModel loginViewModel = new LoginWindowViewModel(loginWindow);
+            LoginViewModel loginViewModel = new LoginViewModel(loginWindow);
 
             loginWindow.DataContext = loginViewModel;
 
@@ -31,7 +31,7 @@ namespace Planer
             var result = loginWindow.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                MainWindowViewModel mainViewModel = new MainWindowViewModel(loginViewModel.UserName);
+                MainViewModel mainViewModel = new MainViewModel(loginViewModel.UserName);
                 mainWindow.DataContext = mainViewModel;
                 mainWindow.Show();
             }

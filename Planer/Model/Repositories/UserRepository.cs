@@ -6,21 +6,24 @@ using System.Threading.Tasks;
 
 namespace Model.Repositories
 {
-    public class UserRepository
+    public class UserRepository : BaseRepository
     {
-        PlanerDatabaseEntities entities = new PlanerDatabaseEntities();
-
         public IQueryable<User> GetAll()
         {
-            return entities.Users.AsQueryable();
+            return Entities.Users.AsQueryable();
+        }
+
+        public User GetById(int Id)
+        {
+            return Entities.Users.SingleOrDefault(u => u.Id.Equals(Id));
         }
 
         public void Add(User newUser)
         {
             if (newUser != null)
             {
-                entities.Users.Add(newUser);
-                entities.SaveChanges();
+                Entities.Users.Add(newUser);
+                Entities.SaveChanges();
             }
         }
 
@@ -32,24 +35,24 @@ namespace Model.Repositories
 
             if (newUser != null)
             {
-                entities.Users.Add(newUser);
-                entities.SaveChanges();
+                Entities.Users.Add(newUser);
+                Entities.SaveChanges();
             }
         }
 
         public User GetUserByName(string userName)
         {
-            return entities.Users.Single(u => u.Name.Equals(userName));
+            return Entities.Users.Single(u => u.Name.Equals(userName));
         }
 
         public bool Login(string userName, string password)
         {
-            return entities.Users.Any(u => u.Name.Equals(userName) && u.Password.Equals(password));
+            return Entities.Users.Any(u => u.Name.Equals(userName) && u.Password.Equals(password));
         }
 
         public bool Exists(string userName)
         {
-            var user = entities.Users.SingleOrDefault(u => u.Name.Equals(userName));
+            var user = Entities.Users.SingleOrDefault(u => u.Name.Equals(userName));
 
             return user != null;
         }

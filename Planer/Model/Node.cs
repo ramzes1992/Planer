@@ -28,8 +28,8 @@ namespace Model
     
         public virtual ICollection<Node> Children { get; set; }
         public virtual Node Parent { get; set; }
-        public virtual Project Project { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

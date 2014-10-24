@@ -9,18 +9,18 @@
         <EntityTypeShape EntityType="PlanerDatabaseModel.Node" Width="1.5" PointX="5.25" PointY="10.625" />
         <EntityTypeShape EntityType="PlanerDatabaseModel.Permission" Width="1.5" PointX="7.5" PointY="7.875" />
         <EntityTypeShape EntityType="PlanerDatabaseModel.PermissionType" Width="1.5" PointX="3" PointY="7" />
-        <EntityTypeShape EntityType="PlanerDatabaseModel.Project" Width="1.5" PointX="3" PointY="10.75" />
         <EntityTypeShape EntityType="PlanerDatabaseModel.Task" Width="1.5" PointX="7.5" PointY="11.75" />
         <EntityTypeShape EntityType="PlanerDatabaseModel.User" Width="1.5" PointX="0.75" PointY="4.625" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Collaborators_PermissionTypes" />
-        <AssociationConnector Association="PlanerDatabaseModel.FK_Collaborators_Projects" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Collaborators_Users" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Nodes_Nodes" />
-        <AssociationConnector Association="PlanerDatabaseModel.FK_Nodes_Projects" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Permissions_Nodes" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Tasks_Nodes" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Permissions_PermissionTypes" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Permissions_Users" />
+        <EntityTypeShape EntityType="PlanerDatabaseModel.Project" Width="1.5" PointX="1.5" PointY="10.5" />
+        <AssociationConnector Association="PlanerDatabaseModel.FK_Collaborators_Projects" />
+        <AssociationConnector Association="PlanerDatabaseModel.FK_Nodes_Projects" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Projects_Users" />
         <AssociationConnector Association="PlanerDatabaseModel.FK_Tasks_Projects" />
       </Diagram>

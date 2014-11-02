@@ -33,11 +33,8 @@ namespace Model.Repositories
             newProject.Name = name;
             newProject.Owner = owner;
 
-            if (newProject != null)
-            {
-                Entities.Projects.Add(newProject);
-                Entities.SaveChanges();
-            }
+            Entities.Projects.Add(newProject);
+            Entities.SaveChanges();
         }
 
         public void Add(string name, string ownerName)

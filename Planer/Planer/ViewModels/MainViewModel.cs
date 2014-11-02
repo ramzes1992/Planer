@@ -8,6 +8,7 @@ using Model;
 using Model.Repositories;
 using Planer.Views;
 using Microsoft.Practices.Prism.Commands;
+using System.Windows.Controls;
 
 namespace Planer.ViewModels
 {
@@ -46,10 +47,15 @@ namespace Planer.ViewModels
             }
             set
             {
-                if(value != _currentProject)
+                if (value != _currentProject)
                 {
                     _currentProject = value;
                     RaisePropertyChanged(() => CurrentProject);
+
+                    if (value == null)
+                    {
+                        CurrentPage = null;
+                    }
                 }
             }
         }
@@ -72,6 +78,28 @@ namespace Planer.ViewModels
         //}
         #endregion
 
+        #region Current Page
+
+        private Page _currentPage;
+        public Page CurrentPage
+        {
+            get
+            {
+                return _currentPage;
+            }
+
+            set
+            {
+                if(_currentPage != value)
+                {
+                    _currentPage = value;
+                    RaisePropertyChanged(() => CurrentPage);
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Members
@@ -92,7 +120,7 @@ namespace Planer.ViewModels
 
             var result = view.ShowDialog();
 
-            if(result ?? false)
+            if (result ?? false)
             {
                 this.CurrentProject = viewModel.SelectedProject;
             }
@@ -116,14 +144,65 @@ namespace Planer.ViewModels
         }
         #endregion
 
+        #region Menu Close Project
+        public DelegateCommand CloseProjectClick { get; set; }
+        private void CloseProjectExecute()
+        {
+            CurrentProject = null;
+        }
+        #endregion
+
+        #region Navigate To Tree Page
+        public DelegateCommand NavigateToTreePageClick { get; set; }
+
+        private void NavigateToTreePageExecute()
+        {
+            Page view = new TreePage();
+            TreeViewModel _treeViewModel = new TreeViewModel(CurrentProject);
+            view.DataContext = _treeViewModel;
+            CurrentPage = view;
+        }
+        #endregion
+
+        #region Navigate To Tasks List Page
+        public DelegateCommand NavigateToTasksListPageClick { get; set; }
+
+        private void NavigateToTasksListPageExecute()
+        {
+            Page view = new TasksListPage();
+            TasksListViewModel _tasksListViewModel = new TasksListViewModel(CurrentProject);
+            view.DataContext = _tasksListViewModel;
+            CurrentPage = view;
+        }
+        #endregion
+
+        #region Navigate To Budget Page
+        public DelegateCommand NavigateToBudgetPageClick { get; set; }
+
+        private void NavigateToBudgetPageExecute()
+        {
+            Page view = new BudgetPage();
+            BudgetViewModel _budgetViewModel = new BudgetViewModel(CurrentProject);
+            view.DataContext = _budgetViewModel;
+            CurrentPage = view;
+        }
+        #endregion
+
         #endregion
 
         #region Ctor
         public MainViewModel(string currentUserName)
         {
             _currentUser = _userRepository.GetUserByName(currentUserName);
+
             OpenProjectClick = new DelegateCommand(OpenProjectExecute);
             NewProjectClick = new DelegateCommand(NewProjectExecute);
+            CloseProjectClick = new DelegateCommand(CloseProjectExecute);
+
+            NavigateToTreePageClick = new DelegateCommand(NavigateToTreePageExecute);
+            NavigateToTasksListPageClick = new DelegateCommand(NavigateToTasksListPageExecute);
+            NavigateToBudgetPageClick = new DelegateCommand(NavigateToBudgetPageExecute);
+
         }
 
         #endregion

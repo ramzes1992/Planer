@@ -3,11 +3,60 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:e="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:helpers="clr-namespace:Planer.Helpers"
+      xmlns:behaviors="clr-namespace:Planer.Behaviors"
+      xmlns:converters="clr-namespace:Planer.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="TreePage">
-    <Grid Background="Red">
-        <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Text}"/>
+    <Page.Resources>
+        <converters:IsObjectNotNullToVisibilityConverter x:Key="IsObjectNotNullToVisibilityConverter"/>
+    </Page.Resources>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/> <!--Selected Item Details-->
+        </Grid.ColumnDefinitions>
+        <TreeView ItemsSource="{Binding TopLevelNodes}" 
+                  PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown"
+                  BorderThickness="0">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add" Command="{Binding AddNewRootNodeCommand}"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            <e:Interaction.Behaviors>
+                <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+            </e:Interaction.Behaviors>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Grid MinWidth="90">
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add" Click="ContextMenu_AddNewNodeItem_Click"/>
+                                <MenuItem Header="Edit" Click="ContextMenu_EditNodeItem_Click"/>
+                                <MenuItem Header="Remove" Click="ContextMenu_RemoveNodeItem_Click"/> 
+                            </ContextMenu>
+                        </Grid.ContextMenu>
+                        <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <!--<StackPanel Grid.Column="1" Visibility="{Binding SelectedItem, Converter={StaticResource ResourceKey=IsObjectNotNullToVisibilityConverter}}"
+                    DataContext="{Binding Path=SelectedItem}">
+            <TextBlock Text="{Binding Path=Name}"/>
+        </StackPanel>-->
+        
+        <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Bottom" Text="{Binding Text}"/>
     </Grid>
 
 </Page>

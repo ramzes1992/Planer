@@ -28,7 +28,7 @@ namespace Planer.ViewModels
                 {
                     _userName = value;
                     RaisePropertyChanged(() => UserName);
-                    RegisterClick.RaiseCanExecuteChanged();
+                    RegisterCommand.RaiseCanExecuteChanged();
                     ValidationError = string.Empty;
                 }
             }
@@ -50,7 +50,7 @@ namespace Planer.ViewModels
                 {
                     _password = value;
                     RaisePropertyChanged(() => Password);
-                    RegisterClick.RaiseCanExecuteChanged();
+                    RegisterCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace Planer.ViewModels
                 {
                     _confirmPassword = value;
                     RaisePropertyChanged(() => ConfirmPassword);
-                    RegisterClick.RaiseCanExecuteChanged();
+                    RegisterCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace Planer.ViewModels
         #region Commands
 
         #region Register Click
-        public DelegateCommand RegisterClick { get; private set; }
+        public DelegateCommand RegisterCommand { get; private set; }
 
         private bool RegisterCanExecute()
         {
@@ -143,7 +143,7 @@ namespace Planer.ViewModels
             _userRepository = userRepo;
             _view = view;
 
-            RegisterClick = new DelegateCommand(RegisterExecute, RegisterCanExecute);
+            RegisterCommand = new DelegateCommand(RegisterExecute, RegisterCanExecute);
         }
 
         #endregion

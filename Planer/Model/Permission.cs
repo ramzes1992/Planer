@@ -19,8 +19,8 @@ namespace Model
         public int NodeId { get; set; }
         public int PermissionId { get; set; }
     
-        public virtual Node Node { get; set; }
         public virtual PermissionType PermissionType { get; set; }
         public virtual User User { get; set; }
+        public virtual Node Node { get; set; }
     }
 }

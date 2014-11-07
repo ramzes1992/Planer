@@ -17,8 +17,8 @@ namespace Model
         public Project()
         {
             this.Collaborators = new HashSet<Collaborator>();
-            this.Nodes = new HashSet<Node>();
             this.Tasks = new HashSet<Task>();
+            this.Nodes = new HashSet<Node>();
         }
     
         public int Id { get; set; }
@@ -26,8 +26,8 @@ namespace Model
         public int OwnerId { get; set; }
     
         public virtual ICollection<Collaborator> Collaborators { get; set; }
-        public virtual ICollection<Node> Nodes { get; set; }
         public virtual User Owner { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Node> Nodes { get; set; }
     }
 }

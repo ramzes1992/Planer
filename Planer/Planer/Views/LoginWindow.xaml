@@ -26,9 +26,9 @@
                      helper:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" helper:PasswordHelper.Attach="True"/>
 
         <Button Click="CancelButton_Click" IsCancel="True" Content="Cancel" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Button Command="{Binding LoginClick}" IsDefault="True" Content="Login" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        
-        <Button Command="{Binding RegisterClick}"
+        <Button Command="{Binding LoginCommand}" IsDefault="True" Content="Login" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <Button Command="{Binding RegisterCommand}"
                 Foreground="Blue" Background="Transparent" BorderBrush="Transparent"
                 Grid.Column="1" Grid.Row="3" Content="Register" FontSize="10" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="2"/>

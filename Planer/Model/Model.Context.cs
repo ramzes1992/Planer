@@ -26,11 +26,11 @@ namespace Model
         }
     
         public virtual DbSet<Collaborator> Collaborators { get; set; }
-        public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<PermissionType> PermissionTypes { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Node> Nodes { get; set; }
     }
 }

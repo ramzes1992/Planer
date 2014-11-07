@@ -49,11 +49,18 @@ namespace Planer.ViewModels
             {
                 if (value != _currentProject)
                 {
+                    var isOldValueNull = _currentProject == null;
+
                     _currentProject = value;
                     RaisePropertyChanged(() => CurrentProject);
 
+                    if (isOldValueNull)
+                    {//selected new project
+                        NavigateToTreePageExecute();
+                    }
+
                     if (value == null)
-                    {
+                    {//project is closed
                         CurrentPage = null;
                     }
                 }
@@ -90,7 +97,7 @@ namespace Planer.ViewModels
 
             set
             {
-                if(_currentPage != value)
+                if (_currentPage != value)
                 {
                     _currentPage = value;
                     RaisePropertyChanged(() => CurrentPage);
@@ -111,7 +118,7 @@ namespace Planer.ViewModels
         #region Commands
 
         #region Menu Open Project
-        public DelegateCommand OpenProjectClick { get; set; }
+        public DelegateCommand OpenProjectCommand { get; set; }
         private void OpenProjectExecute()
         {
             ProjectChooserWindow view = new ProjectChooserWindow();
@@ -128,7 +135,7 @@ namespace Planer.ViewModels
         #endregion
 
         #region Menu New Project
-        public DelegateCommand NewProjectClick { get; set; }
+        public DelegateCommand NewProjectCommand { get; set; }
         private void NewProjectExecute()
         {
             NewProjectWindow view = new NewProjectWindow();
@@ -145,7 +152,7 @@ namespace Planer.ViewModels
         #endregion
 
         #region Menu Close Project
-        public DelegateCommand CloseProjectClick { get; set; }
+        public DelegateCommand CloseProjectCommand { get; set; }
         private void CloseProjectExecute()
         {
             CurrentProject = null;
@@ -153,7 +160,7 @@ namespace Planer.ViewModels
         #endregion
 
         #region Navigate To Tree Page
-        public DelegateCommand NavigateToTreePageClick { get; set; }
+        public DelegateCommand NavigateToTreePageCommand { get; set; }
 
         private void NavigateToTreePageExecute()
         {
@@ -165,7 +172,7 @@ namespace Planer.ViewModels
         #endregion
 
         #region Navigate To Tasks List Page
-        public DelegateCommand NavigateToTasksListPageClick { get; set; }
+        public DelegateCommand NavigateToTasksListPageCommand { get; set; }
 
         private void NavigateToTasksListPageExecute()
         {
@@ -177,7 +184,7 @@ namespace Planer.ViewModels
         #endregion
 
         #region Navigate To Budget Page
-        public DelegateCommand NavigateToBudgetPageClick { get; set; }
+        public DelegateCommand NavigateToBudgetPageCommand { get; set; }
 
         private void NavigateToBudgetPageExecute()
         {
@@ -195,13 +202,13 @@ namespace Planer.ViewModels
         {
             _currentUser = _userRepository.GetUserByName(currentUserName);
 
-            OpenProjectClick = new DelegateCommand(OpenProjectExecute);
-            NewProjectClick = new DelegateCommand(NewProjectExecute);
-            CloseProjectClick = new DelegateCommand(CloseProjectExecute);
+            OpenProjectCommand = new DelegateCommand(OpenProjectExecute);
+            NewProjectCommand = new DelegateCommand(NewProjectExecute);
+            CloseProjectCommand = new DelegateCommand(CloseProjectExecute);
 
-            NavigateToTreePageClick = new DelegateCommand(NavigateToTreePageExecute);
-            NavigateToTasksListPageClick = new DelegateCommand(NavigateToTasksListPageExecute);
-            NavigateToBudgetPageClick = new DelegateCommand(NavigateToBudgetPageExecute);
+            NavigateToTreePageCommand = new DelegateCommand(NavigateToTreePageExecute);
+            NavigateToTasksListPageCommand = new DelegateCommand(NavigateToTasksListPageExecute);
+            NavigateToBudgetPageCommand = new DelegateCommand(NavigateToBudgetPageExecute);
 
         }
 

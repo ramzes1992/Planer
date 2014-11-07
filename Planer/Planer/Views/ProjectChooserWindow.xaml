@@ -16,7 +16,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Column="1">
-            <Button Command="{Binding OpenProjectClick}" Content="Open Project" Margin="0,5"/>
+            <Button Command="{Binding OpenProjectCommand}" Content="Open Project" Margin="0,5"/>
         </StackPanel>
     </Grid>
 </Window>

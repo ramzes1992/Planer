@@ -20,7 +20,7 @@ namespace Model
         public Nullable<int> NodeId { get; set; }
         public int ProjectId { get; set; }
     
-        public virtual Node Node { get; set; }
         public virtual Project Project { get; set; }
+        public virtual Node Node { get; set; }
     }
 }

@@ -13,9 +13,9 @@
     <Grid>
         <Menu VerticalAlignment="Top">
             <MenuItem Header="Projects">
-                <MenuItem Header="Open Project" Command="{Binding OpenProjectClick}"/>
-                <MenuItem Header="New Project" Command="{Binding NewProjectClick}"/>
-                <MenuItem Header="Close Project" Command="{Binding CloseProjectClick}" 
+                <MenuItem Header="Open Project" Command="{Binding OpenProjectCommand}"/>
+                <MenuItem Header="New Project" Command="{Binding NewProjectCommand}"/>
+                <MenuItem Header="Close Project" Command="{Binding CloseProjectCommand}" 
                           IsEnabled="{Binding CurrentProject, TargetNullValue=false}"/>
             </MenuItem>
         </Menu>
@@ -25,14 +25,14 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" IsEnabled="{Binding CurrentProject, TargetNullValue=false}">
-                <Button Command="{Binding NavigateToTreePageClick}" Content="Tree" Margin="5,2" MinWidth="90"/>
-                <Button Command="{Binding NavigateToTasksListPageClick}" Content="Tasks List" Margin="5,2" MinWidth="90"/>
-                <Button Command="{Binding NavigateToBudgetPageClick}" Content="Budget" Margin="5,2" MinWidth="90"/>
+                <Button Command="{Binding NavigateToTreePageCommand}" Content="Tree" Margin="5,2" MinWidth="90"/>
+                <Button Command="{Binding NavigateToTasksListPageCommand}" Content="Tasks List" Margin="5,2" MinWidth="90"/>
+                <Button Command="{Binding NavigateToBudgetPageCommand}" Content="Budget" Margin="5,2" MinWidth="90"/>
             </StackPanel>
             
             <Frame Content="{Binding CurrentPage}" Grid.Row="1" NavigationUIVisibility="Hidden" />
 
-            <Button Command="{Binding OpenProjectClick}"
+            <Button Command="{Binding OpenProjectCommand}"
                     Visibility="{Binding CurrentProject, Converter={StaticResource ResourceKey=IsObjectNullToVisibilityConverter}}"
                     Grid.Row="1" Content="Open Project" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>

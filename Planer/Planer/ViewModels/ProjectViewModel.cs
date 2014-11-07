@@ -37,7 +37,7 @@ namespace Planer.ViewModels
                 {
                     _selectedProject = value;
                     RaisePropertyChanged(() => SelectedProject);
-                    OpenProjectClick.RaiseCanExecuteChanged();
+                    OpenProjectCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Planer.ViewModels
                 {
                     _newProjectName = value;
                     RaisePropertyChanged(() => NewProjectName);
-                    CreateNewProjectClick.RaiseCanExecuteChanged();
+                    CreateNewProjectCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace Planer.ViewModels
         #region Commands
 
         #region Open Project Command
-        public DelegateCommand OpenProjectClick { get; set; }
+        public DelegateCommand OpenProjectCommand { get; set; }
 
         private bool OpenProjectCanExecute()
         {
@@ -97,7 +97,7 @@ namespace Planer.ViewModels
 
         #region Create Project Command
 
-        public DelegateCommand CreateNewProjectClick { get; set; }
+        public DelegateCommand CreateNewProjectCommand { get; set; }
 
         private bool CreateNewProjectCanExecute()
         {
@@ -132,8 +132,8 @@ namespace Planer.ViewModels
             this._currentUser = user;
             this._view = view;
 
-            OpenProjectClick = new DelegateCommand(OpenProjectExecute, OpenProjectCanExecute);
-            CreateNewProjectClick = new DelegateCommand(CreateNewProjectExecute, CreateNewProjectCanExecute);
+            OpenProjectCommand = new DelegateCommand(OpenProjectExecute, OpenProjectCanExecute);
+            CreateNewProjectCommand = new DelegateCommand(CreateNewProjectExecute, CreateNewProjectCanExecute);
 
             Projects = new ObservableCollection<Project>(_currentUser.Projects);
         }

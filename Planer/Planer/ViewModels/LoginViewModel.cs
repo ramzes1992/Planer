@@ -33,7 +33,7 @@ namespace Planer.ViewModels
                 {
                     _userName = value;
                     RaisePropertyChanged(() => UserName);
-                    LoginClick.RaiseCanExecuteChanged();
+                    LoginCommand.RaiseCanExecuteChanged();
                     ValidationError = string.Empty;
                 }
             }
@@ -55,7 +55,7 @@ namespace Planer.ViewModels
                 {
                     _password = value;
                     RaisePropertyChanged(() => Password);
-                    LoginClick.RaiseCanExecuteChanged();
+                    LoginCommand.RaiseCanExecuteChanged();
                     ValidationError = string.Empty;
                 }
             }
@@ -95,7 +95,7 @@ namespace Planer.ViewModels
         #region Commands
 
         #region Login Click
-        public DelegateCommand LoginClick { get; private set; }
+        public DelegateCommand LoginCommand { get; private set; }
 
         private bool LoginCanExecute()
         {
@@ -120,7 +120,7 @@ namespace Planer.ViewModels
         #endregion
 
         #region Register Click
-        public DelegateCommand RegisterClick { get; private set; }
+        public DelegateCommand RegisterCommand { get; private set; }
 
         private void RegisterExecute()
         {
@@ -148,9 +148,9 @@ namespace Planer.ViewModels
 
         public LoginViewModel(Window view)
         {
-            LoginClick = new DelegateCommand(LoginExecute, LoginCanExecute);
+            LoginCommand = new DelegateCommand(LoginExecute, LoginCanExecute);
 
-            RegisterClick = new DelegateCommand(RegisterExecute);
+            RegisterCommand = new DelegateCommand(RegisterExecute);
 
             _userRepository.Login(string.Empty, string.Empty);// to speedup connection with database
 

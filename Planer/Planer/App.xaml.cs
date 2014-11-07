@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -28,6 +30,12 @@ namespace Planer
 
             MainWindow mainWindow = new MainWindow();
 
+#if DEBUG
+            MainViewModel mainViewModel = new MainViewModel("ramzes");
+            mainWindow.DataContext = mainViewModel;
+            mainWindow.Show();
+#else
+
             var result = loginWindow.ShowDialog();
             if (result.HasValue && result.Value)
             {
@@ -39,6 +47,8 @@ namespace Planer
             {
                 mainWindow.Close();
             }
+
+#endif
         }
     }
 }

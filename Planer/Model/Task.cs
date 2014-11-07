@@ -19,6 +19,7 @@ namespace Model
         public int State { get; set; }
         public Nullable<int> NodeId { get; set; }
         public int ProjectId { get; set; }
+        public Nullable<int> Priority { get; set; }
     
         public virtual Project Project { get; set; }
         public virtual Node Node { get; set; }

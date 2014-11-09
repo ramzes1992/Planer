@@ -4,85 +4,128 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModel="clr-namespace:Planer.ViewModels"
+      xmlns:converters="clr-namespace:Planer.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="600"
 	  Title="TasksListPage">
+    <Page.Resources>
+        
+        <converters:TaskSateToColorConverter x:Key="TaskSateToColorConverter"/>
+        
+        <ContextMenu x:Key="ListBoxContextMenu">
+            <MenuItem Header="Add" Command="{Binding AddNewTaskCommand}"/>
+        </ContextMenu>
+        
+        <ContextMenu x:Key="ListBoxItemContextMenu">
+            <MenuItem Header="Edit" Click="Context_MenuItem_Edit_Click"/>
+            <MenuItem Header="Remove" Click="Context_MenuItem_Remove_Click" />
+            <Separator/>
+            <MenuItem Click="MenuItem_Click" Tag="ImportantAndUrgent" Header="Move to Important and Urgent"/>
+            <MenuItem Click="MenuItem_Click" Tag="ImportantAndNotUrgent" Header="Move to Important and Not Urgent"/>
+            <MenuItem Click="MenuItem_Click" Tag="NotImportantAndUrgent" Header="Move to Not Important and Urgent"/>
+            <MenuItem Click="MenuItem_Click" Tag="NotImportantAndNotUrgent" Header="Move to Not Important and Not Urgent"/>
+            <MenuItem Click="MenuItem_Click" Tag="Unsigned" Header="Move to Unsigned"/>
+        </ContextMenu>
+        
+        <Style x:Key="ListBoxStyle" TargetType="ListBox">
+            <Setter Property="SelectedItem" Value="{Binding SelectedItem}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop" Value="True"/>
+            <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxContextMenu}"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItemContextMenu}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}" Tag="{Binding Id}" Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="9"/>
+        </Style>
+
+    </Page.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Label Content="Important And Urgent"/>
-            <ListBox ItemsSource="{Binding ImportantAndUrgentTasks}" SelectedItem="{Binding SelectedItem}"
-                     BorderThickness="0"
-                     Background="LightGray">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Text}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Label Content="Important And Not Urgent"/>
-            <ListBox ItemsSource="{Binding ImportantAndNotUrgentTasks}" SelectedItem="{Binding SelectedItem}"
-                     BorderThickness="0"
-                     Background="LightGray">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Text}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Label Content="Not Important And Urgent"/>
-            <ListBox ItemsSource="{Binding NotImportantAndUrgentTasks}" SelectedItem="{Binding SelectedItem}"
-                     BorderThickness="0"
-                     Background="LightGray">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Text}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Label Content="Not Important And Not Urgent"/>
-            <ListBox ItemsSource="{Binding NotImportantAndNotUrgentTasks}" SelectedItem="{Binding SelectedItem}"
-                     BorderThickness="0"
-                     Background="LightGray">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Text}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-        
-        <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
-            <Label VerticalAlignment="Top" HorizontalAlignment="Left" Content="Unsigned Tasks"/>
-            <ListBox ItemsSource="{Binding UnsignedTasks}" SelectedItem="{Binding SelectedItem}"
-                     BorderThickness="0"
-                     Background="LightGray"
-                     Margin="0,25,0,0"
-                     VerticalAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Text}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Grid>
+        <Border Grid.Column="0" Grid.Row="0" BorderThickness="0,0,1,1" BorderBrush="Black">
+            <Grid>
+                <Label Content="Important And Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
+                <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="I"/>
+                <ListBox ItemsSource="{Binding ImportantAndUrgentTasks}" 
+                         Style="{StaticResource ResourceKey=ListBoxStyle}"
+                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
+                         Tag="ImportantAndUrgent" >
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Grid.Row="0" BorderThickness="1,0,0,1" BorderBrush="Black">
+            <Grid >
+                <Label Content="Important And Not Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
+                <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="II"/>
+                <ListBox ItemsSource="{Binding ImportantAndNotUrgentTasks}" 
+                         Style="{StaticResource ResourceKey=ListBoxStyle}"
+                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
+                         Tag="ImportantAndNotUrgent">
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="0" Grid.Row="1" BorderThickness="0,1,1,0" BorderBrush="Black">
+            <Grid>
+                <Label Content="Not Important And Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
+                <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="III"/>
+                <ListBox ItemsSource="{Binding NotImportantAndUrgentTasks}" 
+                         Style="{StaticResource ResourceKey=ListBoxStyle}"
+                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
+                         Tag="NotImportantAndUrgent">
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Grid.Row="1" BorderThickness="1,1,0,0" BorderBrush="Black">
+            <Grid>
+                <Label Content="Not Important And Not Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
+                <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="IV"/>
+                <ListBox ItemsSource="{Binding NotImportantAndNotUrgentTasks}" 
+                         Style="{StaticResource ResourceKey=ListBoxStyle}"
+                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
+                         Tag="NotImportantAndNotUrgent">
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" BorderThickness="2,0,0,0" BorderBrush="Black">
+            <Grid>
+                <Label Content="Unsigned Tasks" Style="{StaticResource ResourceKey=LabelStyle}"/>
+                <ListBox ItemsSource="{Binding UnsignedTasks}" 
+                         Style="{StaticResource ResourceKey=ListBoxStyle}"
+                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
+                         Tag="UnsignedTasks">
+                </ListBox>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

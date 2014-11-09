@@ -5,7 +5,8 @@
         xmlns:viewModels="clr-namespace:Planer.ViewModels"
         xmlns:converters="clr-namespace:Planer.Converters"
         WindowStartupLocation="CenterScreen"
-        Title="{Binding CurrentProject.Name, StringFormat={}Planer: {0}, FallbackValue='Planer', TargetNullValue='Planer'}" Height="350" Width="525">
+        Title="{Binding CurrentProject.Name, StringFormat={}Planer: {0}, FallbackValue='Planer', TargetNullValue='Planer'}" 
+        Height="600" Width="800">
     <Window.Resources>
         <converters:IsObjectNullConverter x:Key="IsObjectNullConverter" />
         <converters:IsObjectNullToVisibilityConverter x:Key="IsObjectNullToVisibilityConverter" />

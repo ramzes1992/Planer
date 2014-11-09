@@ -1,0 +1,41 @@
+﻿<Window x:Class="Planer.Views.EditTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="ToolWindow"
+        Title="Edit Task Window" Height="154" Width="281"
+        WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=v_TextBox_TaskText}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Content="Text: " HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <Label Content="Priority: " HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1"/>
+        <Label Content="State: " HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2"/>
+
+        <TextBox TextChanged="v_TextBox_TaskText_TextChanged" Name="v_TextBox_TaskText" Grid.Column="1" VerticalAlignment="Top" Margin="5"/>
+        <ComboBox Name="v_ComboBox_TaskPriority" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Margin="5">
+            <ComboBoxItem Content="Important and Urgent" />
+            <ComboBoxItem Content="Important and Not Urgent" />
+            <ComboBoxItem Content="Not Important and Urgent" />
+            <ComboBoxItem Content="Not Important and Not Urgent" />
+            <ComboBoxItem Content="Unsigned" />
+        </ComboBox>
+
+        <ComboBox Name="v_ComboBox_TaskState" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="5">
+            <ComboBoxItem Content="Not Started" />
+            <ComboBoxItem Content="Work In Progress" />
+            <ComboBoxItem Content="Done" />
+        </ComboBox>
+        
+        <Button Name="v_Button_Edit" IsEnabled="False" Click="Button_Click" VerticalAlignment="Center" IsDefault="True" HorizontalAlignment="Center" Content="Edit" Grid.Column="1" Grid.Row="3" />
+    </Grid>
+</Window>

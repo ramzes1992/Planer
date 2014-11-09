@@ -54,6 +54,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums\EisenhowerPriority.cs" />
+    <Compile Include="Enums\TaskState.cs" />
     <Compile Include="Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

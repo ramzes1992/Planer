@@ -86,6 +86,7 @@
     <Compile Include="Converters\IsObjectNotNullConverter.cs" />
     <Compile Include="Converters\IsObjectNotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\IsObjectNullToVisibilityConverter.cs" />
+    <Compile Include="Converters\TaskSateToColorConverter.cs" />
     <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\NodeItemModel.cs" />
@@ -100,11 +101,17 @@
     <Compile Include="Views\EditNodeWindow.xaml.cs">
       <DependentUpon>EditNodeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditTaskWindow.xaml.cs">
+      <DependentUpon>EditTaskWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewNodeWindow.xaml.cs">
       <DependentUpon>NewNodeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewProjectWindow.xaml.cs">
       <DependentUpon>NewProjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewTaskWindow.xaml.cs">
+      <DependentUpon>NewTaskWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProjectChooserWindow.xaml.cs">
       <DependentUpon>ProjectChooserWindow.xaml</DependentUpon>
@@ -123,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditNodeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditTaskWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewProjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewTaskWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

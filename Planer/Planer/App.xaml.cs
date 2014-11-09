@@ -1,6 +1,4 @@
-﻿#define DEBUG
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -22,12 +20,12 @@ namespace Planer
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+#if !DEBUG
             LoginWindow loginWindow = new LoginWindow();
             LoginViewModel loginViewModel = new LoginViewModel(loginWindow);
 
             loginWindow.DataContext = loginViewModel;
-
+#endif
             MainWindow mainWindow = new MainWindow();
 
 #if DEBUG

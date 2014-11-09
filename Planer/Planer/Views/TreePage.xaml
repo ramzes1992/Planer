@@ -15,8 +15,8 @@
     </Page.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/> <!--Selected Item Details-->
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/> <!--Selected Item Details-->
         </Grid.ColumnDefinitions>
         <TreeView ItemsSource="{Binding TopLevelNodes}" 
                   PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown"
@@ -36,7 +36,7 @@
             </e:Interaction.Behaviors>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <Grid MinWidth="90">
+                    <Grid MinWidth="90" MinHeight="25">
                         <Grid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Add" Click="ContextMenu_AddNewNodeItem_Click"/>
@@ -45,16 +45,23 @@
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}"/>
-                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
                     </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <!--<StackPanel Grid.Column="1" Visibility="{Binding SelectedItem, Converter={StaticResource ResourceKey=IsObjectNotNullToVisibilityConverter}}"
+        <Grid Grid.Column="1" Visibility="{Binding SelectedItem, Converter={StaticResource ResourceKey=IsObjectNotNullToVisibilityConverter}}"
                     DataContext="{Binding Path=SelectedItem}">
             <TextBlock Text="{Binding Path=Name}"/>
-        </StackPanel>-->
+            <ListBox ItemsSource="{Binding Tasks}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
         
         <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Bottom" Text="{Binding Text}"/>
     </Grid>

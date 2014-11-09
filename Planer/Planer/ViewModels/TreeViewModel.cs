@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Practices.Prism.Commands;
 using Planer.Views;
@@ -59,11 +58,14 @@ namespace Planer.ViewModels
                     RaisePropertyChanged(() => SelectedItem);
 
                     Text = GetParentsNames();//TODO: remove
+                    //RefreshTasksCollection();
                 }
             }
         }
+        #endregion
 
-
+        #region Tasks
+        //private ObservableCollection<Task> Tasks { get; set;}
         #endregion
 
         #endregion
@@ -200,6 +202,15 @@ namespace Planer.ViewModels
             TopLevelNodes = new ObservableCollection<Node>(GetNodes());
             RaisePropertyChanged(() => TopLevelNodes);
         }
+
+        //private void RefreshTasksCollection()
+        //{
+        //    if(SelectedItem != null)
+        //    {
+        //        Tasks = new ObservableCollection<Task>(SelectedItem.Tasks);
+        //        RaisePropertyChanged(() => Tasks);
+        //    }
+        //}
 
         #endregion
     }

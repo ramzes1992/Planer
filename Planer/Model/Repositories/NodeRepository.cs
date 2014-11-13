@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Repositories
 {
@@ -20,7 +19,7 @@ namespace Model.Repositories
 
         public Node Add(string text, Project project)
         {
-            if(project != null && !string.IsNullOrWhiteSpace(text))
+            if (project != null && !string.IsNullOrWhiteSpace(text))
             {
                 Node node = new Node()
                 {
@@ -30,6 +29,8 @@ namespace Model.Repositories
 
                 Entities.Nodes.Add(node);
                 Entities.SaveChanges();
+
+                RecalculateProgresses(node);
 
                 return node;
             }
@@ -51,6 +52,8 @@ namespace Model.Repositories
                 Entities.Nodes.Add(node);
                 Entities.SaveChanges();
 
+                RecalculateProgresses(node);
+
                 return node;
             }
 
@@ -59,21 +62,34 @@ namespace Model.Repositories
 
         public void Edit(Node node)
         {
+            var entry = Entities.Entry(node);
+            if (entry.CurrentValues.PropertyNames.Any(p => entry.Property(p).IsModified
+                                                           && p.Equals("Progress")))
+            {
+                RecalculateProgresses(node);
+            }
+
             Entities.SaveChanges();
         }
 
         public void Remove(Node node)
         {
-            if(node.Children.Any())
+            if (node.Children.Any())
             {
-                foreach(var child in node.Children.ToList())
+                foreach (var child in node.Children.ToList())
                 {
                     Remove(child);
                 }
             }
 
+            var tmp = node.Parent;
             Entities.Nodes.Remove(node);
             Entities.SaveChanges();
+
+            if (tmp != null)
+            {
+                RecalculateProgresses(tmp);
+            }
         }
     }
 }

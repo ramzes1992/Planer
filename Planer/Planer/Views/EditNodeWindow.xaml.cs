@@ -36,6 +36,15 @@ namespace Planer.Views
             if (_currentNodeToEdit != null)
             {
                 this.v_TextBox_NodeText.Text = _currentNodeToEdit.Name;
+                this.v_Slider.Value = _currentNodeToEdit.Progress;
+
+
+                if (!_currentNodeToEdit.Tasks.Any() && !_currentNodeToEdit.Children.Any())
+                {
+                    v_TextBlock.Visibility = System.Windows.Visibility.Visible;
+                    v_Slider.Visibility = System.Windows.Visibility.Visible;
+                    v_Label.Visibility = System.Windows.Visibility.Visible;
+                }
             }
         }
 
@@ -43,12 +52,9 @@ namespace Planer.Views
         {
             if (!string.IsNullOrWhiteSpace(v_TextBox_NodeText.Text))
             {
-                if (_currentNodeToEdit.Name != v_TextBox_NodeText.Text)
-                {
-                    _currentNodeToEdit.Name = v_TextBox_NodeText.Text;
-
-                    _nodeRepository.Edit(_currentNodeToEdit);
-                }
+                _currentNodeToEdit.Name = v_TextBox_NodeText.Text;
+                _currentNodeToEdit.Progress = (int)v_Slider.Value;
+                _nodeRepository.Edit(_currentNodeToEdit);
 
                 this.DialogResult = true;
             }

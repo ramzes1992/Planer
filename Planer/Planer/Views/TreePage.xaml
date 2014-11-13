@@ -12,6 +12,23 @@
 	Title="TreePage">
     <Page.Resources>
         <converters:IsObjectNotNullToVisibilityConverter x:Key="IsObjectNotNullToVisibilityConverter"/>
+        <converters:TaskSateToColorConverter x:Key="TaskSateToColorConverter"/>
+        
+        <ContextMenu x:Key="TasksListBoxItemContextMenu">
+            <MenuItem Header="Edit" Click="ContextMenu_EditTaskItem_Click"/>
+            <MenuItem Header="Remove" Click="ContextMenu_RemoveTaskItem_Click"/>
+        </ContextMenu>
+
+        <Style x:Key="TasksListBoxStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=TasksListBoxItemContextMenu}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Page.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -52,18 +69,31 @@
         </TreeView>
 
         <Grid Grid.Column="1" Visibility="{Binding SelectedItem, Converter={StaticResource ResourceKey=IsObjectNotNullToVisibilityConverter}}"
-                    DataContext="{Binding Path=SelectedItem}">
-            <TextBlock Text="{Binding Path=Name}"/>
-            <ListBox ItemsSource="{Binding Tasks}">
+              Background="#FFEEEEEE">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <Button Content="Add New Task" Command="{Binding AddTaskToNodeCommand}"
+                        Margin="0,-20,0,0"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Path=SelectedItem.Name}"/>
+            <ListBox ItemsSource="{Binding Path=SelectedItem.Tasks}"
+                     SelectedItem="{Binding Path=SelectedTask}"
+                     Margin="0,20,0,0" 
+                     Background="Transparent" BorderThickness="0"
+                     Style="{StaticResource ResourceKey=TasksListBoxStyle}">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add Task" Command="{Binding AddTaskToNodeCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Text}"/>
+                        <TextBlock Text="{Binding Text}" Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        
-        <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Bottom" Text="{Binding Text}"/>
+
+        <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Bottom" Text="{Binding SelectedItem.Text}"/>
     </Grid>
 
 </Page>

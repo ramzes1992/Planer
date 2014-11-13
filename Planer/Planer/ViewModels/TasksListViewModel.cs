@@ -120,7 +120,7 @@ namespace Planer.ViewModels
         public DelegateCommand EditTaskCommand { get; set; }
         private void EditTaskExecute()
         {
-            EditTaskWindow _view = new EditTaskWindow(_selectedItem);
+            EditTaskWindow _view = new EditTaskWindow(SelectedItem);
             var result = _view.ShowDialog();
 
             if (result ?? false)

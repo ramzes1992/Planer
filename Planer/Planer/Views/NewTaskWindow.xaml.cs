@@ -24,10 +24,17 @@ namespace Planer.Views
     {
         TaskRepository _taskRepository = new TaskRepository();
         Project _currentProject;
-
+        Node _currentNode;
         public NewTaskWindow(Project currentProject, EisenhowerPriority? startUpPriority = null)
         {
             this._currentProject = currentProject;
+            InitializeComponent();
+        }
+
+        public NewTaskWindow(Project currentProject, Node currentNode)
+        {
+            this._currentProject = currentProject;
+            this._currentNode = currentNode;
             InitializeComponent();
         }
 
@@ -41,6 +48,7 @@ namespace Planer.Views
                 {
                     Text = v_TextBox_TaskText.Text,
                     Project = _currentProject,
+                    Node = _currentNode,
                     Priority = priority
                 };
 

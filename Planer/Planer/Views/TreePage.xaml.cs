@@ -76,5 +76,25 @@ namespace Planer.Views
                 viewModel.EditNodeCommand.Execute();
             }
         }
+
+        private void ContextMenu_EditTaskItem_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (TreeViewModel)this.DataContext;
+
+            if (viewModel != null)
+            {
+                viewModel.EditTaskCommand.Execute();
+            }
+        }
+
+        private void ContextMenu_RemoveTaskItem_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (TreeViewModel)this.DataContext;
+
+            if (viewModel != null)
+            {
+                viewModel.RemoveTaskCommand.Execute();
+            }
+        }
     }
 }

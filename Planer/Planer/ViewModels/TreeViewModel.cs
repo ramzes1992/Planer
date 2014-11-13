@@ -56,12 +56,35 @@ namespace Planer.ViewModels
                 {
                     _selectedItem = value;
                     RaisePropertyChanged(() => SelectedItem);
+                    AddTaskToNodeCommand.RaiseCanExecuteChanged();
 
                     Text = GetParentsNames();//TODO: remove
                     //RefreshTasksCollection();
                 }
             }
         }
+        #endregion
+
+        #region SelectedTask
+
+        private Task _selectedTask;
+        public Task SelectedTask
+        {
+            get
+            {
+                return _selectedTask;
+            }
+
+            set
+            {
+                if (value != _selectedTask)
+                {
+                    _selectedTask = value;
+                    RaisePropertyChanged(() => SelectedTask);
+                }
+            }
+        }
+
         #endregion
 
         #region Tasks
@@ -84,7 +107,7 @@ namespace Planer.ViewModels
 
             if (result ?? false)
             {//result == true
-                RefreshNodesCollection();
+                RefreashAll();
             }
         }
 
@@ -102,7 +125,7 @@ namespace Planer.ViewModels
 
             if (result ?? false)
             {//result == true
-                RefreshNodesCollection();
+                RefreashAll();
             }
         }
 
@@ -120,7 +143,7 @@ namespace Planer.ViewModels
 
             if (result ?? false)
             {//result == true
-                RefreshNodesCollection();
+                RefreashAll();
             }
         }
 
@@ -137,8 +160,69 @@ namespace Planer.ViewModels
                 _nodeRepository.Remove(SelectedItem);
                 SelectedItem = null;
 
-                RefreshNodesCollection();
+                RefreashAll();
             }
+        }
+
+        #endregion
+
+        #region Context Menu Add New Task To Selected Node
+
+        public DelegateCommand AddTaskToNodeCommand { get; set; }
+
+        private void AddTaskToNodeExecute()
+        {
+            if (SelectedItem != null)
+            {
+                NewTaskWindow _view = new NewTaskWindow(_currentProject, SelectedItem);
+                var result = _view.ShowDialog();
+
+                if (result ?? false)
+                {
+                    RefreashAll();
+                }
+            }
+        }
+
+        private bool AddTaskToNodeCanExecute()
+        {
+            return SelectedItem != null;
+        }
+
+        #endregion
+
+        #region Context Menu Edit Task
+
+        public DelegateCommand EditTaskCommand { get; set; }
+
+        private void EditTaskExecute()
+        {
+            if (SelectedTask != null)
+            {
+                EditTaskWindow _view = new EditTaskWindow(SelectedTask);
+                var result = _view.ShowDialog();
+
+                if (result ?? false)
+                {
+                    RefreashAll();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Context Menu Remove Task
+
+        public DelegateCommand RemoveTaskCommand { get; set; }
+
+        private void RemoveTaskExecute()
+        {
+            if (SelectedTask != null)
+            {
+                _taskRepository.Remove(SelectedTask);
+                RefreashAll();
+            }
+
         }
 
         #endregion
@@ -147,6 +231,7 @@ namespace Planer.ViewModels
 
         #region Members
         NodeRepository _nodeRepository = new NodeRepository();
+        TaskRepository _taskRepository = new TaskRepository();
         Project _currentProject;
         #endregion
 
@@ -159,6 +244,10 @@ namespace Planer.ViewModels
             this.AddNewRootNodeCommand = new DelegateCommand(AddNewRootNodeExecute);
             this.EditNodeCommand = new DelegateCommand(EditNodeExecute);
             this.RemoveNodeCommand = new DelegateCommand(RemoveNodeExecute);
+
+            this.AddTaskToNodeCommand = new DelegateCommand(AddTaskToNodeExecute, AddTaskToNodeCanExecute);
+            this.EditTaskCommand = new DelegateCommand(EditTaskExecute);
+            this.RemoveTaskCommand = new DelegateCommand(RemoveTaskExecute);
 
             if (_currentProject != null)
             {
@@ -182,19 +271,28 @@ namespace Planer.ViewModels
             {
                 var result = SelectedItem.Name;
 
-                var parent = SelectedItem.Parent;
-
-                while (parent != null)
+                if (!string.IsNullOrEmpty(result))
                 {
-                    result += ";" + parent.Name;
-                    parent = parent.Parent;
-                }
+                    var parent = SelectedItem.Parent;
 
-                var itemsNames = result.Split(';').Reverse();
-                return string.Join("  -->  ", itemsNames);
+                    while (parent != null)
+                    {
+                        result += ";" + parent.Name;
+                        parent = parent.Parent;
+                    }
+
+                    var itemsNames = result.Split(';').Reverse();
+                    return string.Join("  -->  ", itemsNames);
+                }
             }
 
             return string.Empty;
+        }
+
+        private void RefreashAll()
+        {
+            RefreshNodesCollection();
+            RefreshSelectedNode();
         }
 
         private void RefreshNodesCollection()
@@ -203,9 +301,19 @@ namespace Planer.ViewModels
             RaisePropertyChanged(() => TopLevelNodes);
         }
 
+        private void RefreshSelectedNode()
+        {
+            if (SelectedItem != null)
+            {
+                var id = SelectedItem.Id;
+                SelectedItem = new Node();
+                SelectedItem = _nodeRepository.GetById(id);
+            }
+        }
+
         //private void RefreshTasksCollection()
         //{
-        //    if(SelectedItem != null)
+        //    if (SelectedItem != null)
         //    {
         //        Tasks = new ObservableCollection<Task>(SelectedItem.Tasks);
         //        RaisePropertyChanged(() => Tasks);

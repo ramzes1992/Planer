@@ -13,7 +13,7 @@
     <Page.Resources>
         <converters:IsObjectNotNullToVisibilityConverter x:Key="IsObjectNotNullToVisibilityConverter"/>
         <converters:TaskSateToColorConverter x:Key="TaskSateToColorConverter"/>
-        
+
         <ContextMenu x:Key="TasksListBoxItemContextMenu">
             <MenuItem Header="Edit" Click="ContextMenu_EditTaskItem_Click"/>
             <MenuItem Header="Remove" Click="ContextMenu_RemoveTaskItem_Click"/>
@@ -28,12 +28,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
     </Page.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/> <!--Selected Item Details-->
+            <ColumnDefinition Width="2*"/>
+            <!--Selected Item Details-->
         </Grid.ColumnDefinitions>
         <TreeView ItemsSource="{Binding TopLevelNodes}" 
                   PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown"
@@ -53,16 +54,18 @@
             </e:Interaction.Behaviors>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <Grid MinWidth="90" MinHeight="25">
+                    <Grid MinWidth="120" MinHeight="25">
                         <Grid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Add" Click="ContextMenu_AddNewNodeItem_Click"/>
                                 <MenuItem Header="Edit" Click="ContextMenu_EditNodeItem_Click"/>
-                                <MenuItem Header="Remove" Click="ContextMenu_RemoveNodeItem_Click"/> 
+                                <MenuItem Header="Remove" Click="ContextMenu_RemoveNodeItem_Click"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
-                        <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}"/>
-                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
+                        <ProgressBar Value="{Binding Progress}" Minimum="0" Maximum="100" Foreground="#FF1B8711">
+                        </ProgressBar>
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Top"/>
+                        <TextBlock Text="{Binding Progress, StringFormat={}{0} %}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                     </Grid>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>

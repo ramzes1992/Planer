@@ -19,10 +19,10 @@ namespace Planer.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var state = (TaskState)value;
-
-            if(state != null)
+            if (value != null)
             {
+                var state = (TaskState)value;
+
                 switch(state)
                 {
                     case TaskState.NotStarted:

@@ -5,17 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModel="clr-namespace:Planer.ViewModels"
       xmlns:converters="clr-namespace:Planer.Converters"
+      xmlns:helpers="clr-namespace:Planer.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="600"
 	  Title="TasksListPage">
     <Page.Resources>
-        
+
         <converters:TaskSateToColorConverter x:Key="TaskSateToColorConverter"/>
-        
+
         <ContextMenu x:Key="ListBoxContextMenu">
             <MenuItem Header="Add" Command="{Binding AddNewTaskCommand}"/>
         </ContextMenu>
-        
+
         <ContextMenu x:Key="ListBoxItemContextMenu">
             <MenuItem Header="Edit" Click="Context_MenuItem_Edit_Click"/>
             <MenuItem Header="Remove" Click="Context_MenuItem_Remove_Click" />
@@ -26,7 +27,7 @@
             <MenuItem Click="MenuItem_Click" Tag="NotImportantAndNotUrgent" Header="Move to Not Important and Not Urgent"/>
             <MenuItem Click="MenuItem_Click" Tag="Unsigned" Header="Move to Unsigned"/>
         </ContextMenu>
-        
+
         <Style x:Key="ListBoxStyle" TargetType="ListBox">
             <Setter Property="SelectedItem" Value="{Binding SelectedItem}"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -57,6 +58,54 @@
             <Setter Property="FontSize" Value="9"/>
         </Style>
 
+        <Style TargetType="ListView" x:Key="ListViewStyle">
+            <Setter Property="SelectedItem" Value="{Binding SelectedItem}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxContextMenu}"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItemContextMenu}"/>
+                        <Setter Property="Foreground" Value="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <!--<Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Text}"  Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Status}"/>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>-->
+            <!--<Setter Property="View">
+                <Setter.Value>
+                    <GridView>
+                        <GridViewColumn Width="120" DisplayMemberBinding="{Binding Text}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Text" Click="v_ListView_TasksColumnHeader_Click">Text</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Width="Auto"  DisplayMemberBinding="{Binding State}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="State" Content="State:" Click="v_ListView_TasksColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                    </GridView>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+
     </Page.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -73,11 +122,29 @@
             <Grid>
                 <Label Content="Important And Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="I"/>
-                <ListBox ItemsSource="{Binding ImportantAndUrgentTasks}" 
+                <!--<ListBox ItemsSource="{Binding ImportantAndUrgentTasks}" 
                          Style="{StaticResource ResourceKey=ListBoxStyle}"
                          PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
                          Tag="ImportantAndUrgent" >
-                </ListBox>
+                </ListBox>-->
+                <ListView Name="v_ListView_Tasks"
+                          ItemsSource="{Binding ImportantAndUrgentTasks}"
+                          Style="{StaticResource ResourceKey=ListViewStyle}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="200" DisplayMemberBinding="{Binding Text}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Text" Content="Text" Click="v_ListView_TasksColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <!--<GridViewColumn Width="60" DisplayMemberBinding="{Binding State}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="State" Content="State:" Click="v_ListView_TasksColumnHeader_Click" />
+                                </GridViewColumn.Header>
+                            </GridViewColumn>-->
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
         </Border>
 

@@ -8,9 +8,9 @@ namespace Model.Enums
 {
     public enum EisenhowerPriority
     {
-        ImportantAndUrgent,
-        ImportantAndNotUrgent,
-        NotImportantAndUrgent,
-        NotImportantAndNotUrgent
+        ImportantAndUrgent = 0,
+        ImportantAndNotUrgent = 1,
+        NotImportantAndUrgent = 2,
+        NotImportantAndNotUrgent = 3
     }
 }

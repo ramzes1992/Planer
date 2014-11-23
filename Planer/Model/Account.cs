@@ -12,24 +12,20 @@ namespace Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Project
+    public partial class Account
     {
-        public Project()
+        public Account()
         {
-            this.Collaborators = new HashSet<Collaborator>();
-            this.Tasks = new HashSet<Task>();
-            this.Nodes = new HashSet<Node>();
-            this.Accounts = new HashSet<Account>();
+            this.Transactions = new HashSet<Transaction>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int OwnerId { get; set; }
+        public decimal Amount { get; set; }
+        public int ProjectId { get; set; }
+        public int Type { get; set; }
     
-        public virtual ICollection<Collaborator> Collaborators { get; set; }
-        public virtual User Owner { get; set; }
-        public virtual ICollection<Task> Tasks { get; set; }
-        public virtual ICollection<Node> Nodes { get; set; }
-        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual Project Project { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

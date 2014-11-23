@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model.Enums
 {
-    public enum TaskState
+    public enum AccountType
     {
-        NotStarted = 0,
-        WorkInProgres = 1,
-        Done = 2
+        Account = 0,
+        Moneybox = 1
     }
 }

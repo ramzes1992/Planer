@@ -1,5 +1,4 @@
-﻿using Planer.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Planer.Helpers;
+using Planer.ViewModels;
+
 namespace Planer.Views
 {
     /// <summary>
@@ -29,7 +31,7 @@ namespace Planer.Views
 
         private void ListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem listBoxItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+            ListBoxItem listBoxItem = ViewHelper.VisualUpwardSearch<ListBoxItem>(e.OriginalSource as DependencyObject);
 
             if (listBoxItem != null)
             {
@@ -39,13 +41,7 @@ namespace Planer.Views
             }
         }
 
-        static ListBoxItem VisualUpwardSearch(DependencyObject source)
-        {
-            while (source != null && !(source is ListBoxItem))
-                source = VisualTreeHelper.GetParent(source);
-
-            return source as ListBoxItem;
-        }
+        
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {

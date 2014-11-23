@@ -32,5 +32,7 @@ namespace Model
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Node> Nodes { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
     }
 }

@@ -7,8 +7,77 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="BudgetPage">
+    <Page.Resources>
+        <ContextMenu x:Key="ListBoxItemContextMenu_Accounts">
+            <MenuItem Header="Remove" Click="ListBoxItemContextMenu_RemoveAccountClick"/>
+        </ContextMenu>
 
-    <Grid Background="Blue" >
-        <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Text}"/>
+        <ContextMenu x:Key="ListBoxItemContextMenu_Moneyboxes">
+            <MenuItem Header="Remove" Click="ListBoxItemContextMenu_RemoveMoneyboxClick"/>
+        </ContextMenu>
+
+        <Style x:Key="AccountsListBoxStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItemContextMenu_Accounts}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MoneyboxesListBoxStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItemContextMenu_Moneyboxes}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox ItemsSource="{Binding Accounts}" 
+                     SelectedItem="{Binding SelectedAccount}" Grid.Column="0"
+                     PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown" 
+                     Style="{StaticResource ResourceKey=AccountsListBoxStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate >
+                        <Grid Height="30" MinWidth="120">
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding Amount, StringFormat=N2}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox ItemsSource="{Binding Moneyboxes}" 
+                     SelectedItem="{Binding SelectedMoneybox}" Grid.Column="1"
+                     PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown" 
+                     Style="{StaticResource ResourceKey=MoneyboxesListBoxStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="30" MinWidth="120">
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding Amount, StringFormat=N2}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Command="{Binding AddAccountCommad}" Content="Create Account" Padding="5,1" VerticalAlignment="Center" Margin="5,0"/>
+            <Button Command="{Binding AddMoneyboxCommad}" Content="Create Moneybox" Padding="5,1" VerticalAlignment="Center" Margin="5,0"/>
+        </StackPanel>
     </Grid>
 </Page>

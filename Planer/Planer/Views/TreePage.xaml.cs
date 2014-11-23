@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 using Planer.ViewModels;
 using Model;
+using Planer.Helpers;
 
 namespace Planer.Views
 {
@@ -30,21 +31,13 @@ namespace Planer.Views
 
         private void OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+            TreeViewItem treeViewItem = ViewHelper.VisualUpwardSearch<TreeViewItem>(e.OriginalSource as DependencyObject);
 
             if (treeViewItem != null)
             {
                 treeViewItem.Focus();
                 e.Handled = true;
             }
-        }
-
-        static TreeViewItem VisualUpwardSearch(DependencyObject source)
-        {
-            while (source != null && !(source is TreeViewItem))
-                source = VisualTreeHelper.GetParent(source);
-
-            return source as TreeViewItem;
         }
 
         private void ContextMenu_AddNewNodeItem_Click(object sender, RoutedEventArgs e)

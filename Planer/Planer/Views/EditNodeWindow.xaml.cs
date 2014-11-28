@@ -39,7 +39,7 @@ namespace Planer.Views
                 this.v_Slider.Value = _currentNodeToEdit.Progress;
 
 
-                if (!_currentNodeToEdit.Tasks.Any() && !_currentNodeToEdit.Children.Any())
+                if (!_currentNodeToEdit.Tasks.Any() && !_currentNodeToEdit.Children.Any() && !_currentNodeToEdit.Accounts.Any())
                 {
                     v_TextBlock.Visibility = System.Windows.Visibility.Visible;
                     v_Slider.Visibility = System.Windows.Visibility.Visible;

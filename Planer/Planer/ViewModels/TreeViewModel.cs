@@ -9,10 +9,11 @@ using Model;
 using System.Collections.ObjectModel;
 using Model.Repositories;
 using Planer.Models;
+using Model.Enums;
 
 namespace Planer.ViewModels
 {
-    public class TreeViewModel : BaseViewModel
+    public class TreeViewModel : BaseViewModel, IPage
     {
         #region Properties
 
@@ -58,6 +59,12 @@ namespace Planer.ViewModels
                     RaisePropertyChanged(() => SelectedItem);
                     AddTaskToNodeCommand.RaiseCanExecuteChanged();
 
+                    if(_selectedItem != null)
+                    {
+                        AssignedMoneyboxes = new ObservableCollection<AccountModel>(GetCurrentNodeMoneyboxes());
+                        RaisePropertyChanged(() => AssignedMoneyboxes);
+                    }
+
                     Text = GetParentsNames();//TODO: remove
                     //RefreshTasksCollection();
                 }
@@ -87,6 +94,34 @@ namespace Planer.ViewModels
 
         #endregion
 
+        #region SelectedMoneybox
+
+        private AccountModel _selectedMoneybox;
+        public AccountModel SelectedMoneybox
+        {
+            get
+            {
+                return _selectedMoneybox;
+            }
+
+            set
+            {
+                if (value != _selectedMoneybox)
+                {
+                    _selectedMoneybox = value;
+                    RaisePropertyChanged(() => SelectedMoneybox);
+                }
+            }
+        }
+
+        #endregion
+
+        #region AssignedMoneyboxes
+
+        public ObservableCollection<AccountModel> AssignedMoneyboxes { get; set; }
+
+        #endregion
+
         #region Tasks
         //private ObservableCollection<Task> Tasks { get; set;}
         #endregion
@@ -95,19 +130,41 @@ namespace Planer.ViewModels
 
         #region Commands
 
+        #region Initialize Commands
+
+        private void InitializeCommands()
+        {
+            this.AddNewNodeCommand = new DelegateCommand(AddNewNodeExecute);
+            this.AddNewRootNodeCommand = new DelegateCommand(AddNewRootNodeExecute);
+            this.EditNodeCommand = new DelegateCommand(EditNodeExecute);
+            this.RemoveNodeCommand = new DelegateCommand(RemoveNodeExecute);
+
+            this.AddTaskToNodeCommand = new DelegateCommand(AddTaskToNodeExecute, AddTaskToNodeCanExecute);
+            this.EditTaskCommand = new DelegateCommand(EditTaskExecute);
+            this.RemoveTaskCommand = new DelegateCommand(RemoveTaskExecute);
+
+            this.AssignMoneyboxCommand = new DelegateCommand(AssignMoneyboxExecute);
+            this.UnassignMoneyboxCommand = new DelegateCommand(UnassignMoneyboxExecute);
+        }
+
+        #endregion
+
         #region Context Menu Add New Node
 
         public DelegateCommand AddNewNodeCommand { get; set; }
 
         private void AddNewNodeExecute()
         {
-            NewNodeWindow _view = new NewNodeWindow(_currentProject, SelectedItem);
+            if (SelectedItem != null)
+            {
+                NewNodeWindow _view = new NewNodeWindow(_currentProject, SelectedItem);
 
-            var result = _view.ShowDialog();
+                var result = _view.ShowDialog();
 
-            if (result ?? false)
-            {//result == true
-                RefreashAll();
+                if (result ?? false)
+                {//result == true
+                    Refresh();
+                }
             }
         }
 
@@ -125,7 +182,7 @@ namespace Planer.ViewModels
 
             if (result ?? false)
             {//result == true
-                RefreashAll();
+                Refresh();
             }
         }
 
@@ -137,13 +194,16 @@ namespace Planer.ViewModels
 
         private void EditNodeExecute()
         {
-            EditNodeWindow _view = new EditNodeWindow(SelectedItem);
+            if (SelectedItem != null)
+            {
+                EditNodeWindow _view = new EditNodeWindow(SelectedItem);
 
-            var result = _view.ShowDialog();
+                var result = _view.ShowDialog();
 
-            if (result ?? false)
-            {//result == true
-                RefreashAll();
+                if (result ?? false)
+                {//result == true
+                    Refresh();
+                }
             }
         }
 
@@ -160,7 +220,7 @@ namespace Planer.ViewModels
                 _nodeRepository.Remove(SelectedItem);
                 SelectedItem = null;
 
-                RefreashAll();
+                Refresh();
             }
         }
 
@@ -179,7 +239,7 @@ namespace Planer.ViewModels
 
                 if (result ?? false)
                 {
-                    RefreashAll();
+                    Refresh();
                 }
             }
         }
@@ -204,7 +264,8 @@ namespace Planer.ViewModels
 
                 if (result ?? false)
                 {
-                    RefreashAll();
+                    Refresh();
+                    
                 }
             }
         }
@@ -220,11 +281,45 @@ namespace Planer.ViewModels
             if (SelectedTask != null)
             {
                 _taskRepository.Remove(SelectedTask);
-                RefreashAll();
+                Refresh();
             }
 
         }
 
+        #endregion
+
+        #region Context Menu Assign Moneybox
+        public DelegateCommand AssignMoneyboxCommand { get; set; }
+
+        private void AssignMoneyboxExecute()
+        {
+            if (SelectedItem != null)
+            {
+                MoneyboxesChooserWindow view = new MoneyboxesChooserWindow(_currentProject, SelectedItem);
+                var result = view.ShowDialog();
+
+                if(result ?? false)
+                {
+                    Refresh();
+                }
+            }
+        }
+        #endregion
+
+        #region Context Menu Unassign Moneybox
+        public DelegateCommand UnassignMoneyboxCommand { get; set; }
+
+        private void UnassignMoneyboxExecute()
+        {
+            if (SelectedMoneybox != null)
+            {
+                var moneybox = _accountRepository.GetById(SelectedMoneybox.Id);
+                moneybox.Node = null;
+                _accountRepository.Edit(moneybox);
+
+                Refresh();
+            }
+        }
         #endregion
 
         #endregion
@@ -232,6 +327,7 @@ namespace Planer.ViewModels
         #region Members
         NodeRepository _nodeRepository = new NodeRepository();
         TaskRepository _taskRepository = new TaskRepository();
+        AccountRepository _accountRepository = new AccountRepository();
         Project _currentProject;
         #endregion
 
@@ -240,14 +336,7 @@ namespace Planer.ViewModels
         {
             this._currentProject = currentProject;
 
-            this.AddNewNodeCommand = new DelegateCommand(AddNewNodeExecute);
-            this.AddNewRootNodeCommand = new DelegateCommand(AddNewRootNodeExecute);
-            this.EditNodeCommand = new DelegateCommand(EditNodeExecute);
-            this.RemoveNodeCommand = new DelegateCommand(RemoveNodeExecute);
-
-            this.AddTaskToNodeCommand = new DelegateCommand(AddTaskToNodeExecute, AddTaskToNodeCanExecute);
-            this.EditTaskCommand = new DelegateCommand(EditTaskExecute);
-            this.RemoveTaskCommand = new DelegateCommand(RemoveTaskExecute);
+            InitializeCommands();
 
             if (_currentProject != null)
             {
@@ -263,6 +352,17 @@ namespace Planer.ViewModels
         {
             return _nodeRepository.GetAll().Where(n => n.ProjectId.Equals(_currentProject.Id)
                                                             && n.Parent == root);
+        }
+
+        private IEnumerable<AccountModel> GetCurrentNodeMoneyboxes()
+        {
+            return SelectedItem.Accounts.Select(a => new AccountModel()
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Amount = _accountRepository.GetAmount(a),
+                Type = (AccountType)a.Type
+            });
         }
 
         private string GetParentsNames()
@@ -289,12 +389,6 @@ namespace Planer.ViewModels
             return string.Empty;
         }
 
-        private void RefreashAll()
-        {
-            RefreshNodesCollection();
-            RefreshSelectedNode();
-        }
-
         private void RefreshNodesCollection()
         {
             TopLevelNodes = new ObservableCollection<Node>(GetNodes());
@@ -311,15 +405,12 @@ namespace Planer.ViewModels
             }
         }
 
-        //private void RefreshTasksCollection()
-        //{
-        //    if (SelectedItem != null)
-        //    {
-        //        Tasks = new ObservableCollection<Task>(SelectedItem.Tasks);
-        //        RaisePropertyChanged(() => Tasks);
-        //    }
-        //}
-
         #endregion
+
+        public void Refresh()
+        {
+            RefreshNodesCollection();
+            RefreshSelectedNode();
+        }
     }
 }

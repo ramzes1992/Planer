@@ -57,5 +57,59 @@ namespace Planer.Views
                 viewModel.RemoveMoneyboxCommand.Execute();
             }
         }
+
+        private void ListBoxItemContextMenu_ShowAccountHistoryClick(object sender, RoutedEventArgs e)
+        {
+            BudgetViewModel viewModel = this.DataContext as BudgetViewModel;
+            if (viewModel != null)
+            {
+                viewModel.ShowAccountHistoryCommand.Execute();
+            }
+        }
+
+        private void ListBoxItemContextMenu_ShowMoneyboxHistoryClick(object sender, RoutedEventArgs e)
+        {
+            BudgetViewModel viewModel = this.DataContext as BudgetViewModel;
+            if (viewModel != null)
+            {
+                viewModel.ShowMoneyboxHistoryCommand.Execute();
+            }
+        }
+
+        private void ListBoxItemContextMenu_AddTransactionToAccountClick(object sender, RoutedEventArgs e)
+        {
+            BudgetViewModel viewModel = this.DataContext as BudgetViewModel;
+            if (viewModel != null)
+            {
+                viewModel.AddAccountTransactionCommand.Execute();
+            }
+        }
+
+        private void ListBoxItemContextMenu_AddTransactionToMoneyboxClick(object sender, RoutedEventArgs e)
+        {
+            BudgetViewModel viewModel = this.DataContext as BudgetViewModel;
+            if (viewModel != null)
+            {
+                viewModel.AddMoneyboxTransactionCommand.Execute();
+            }
+        }
+
+        private void ListBoxItemDoubleClick_Accounts(object sender, RoutedEventArgs e)
+        {
+            BudgetViewModel viewModel = this.DataContext as BudgetViewModel;
+            if (viewModel != null)
+            {
+                viewModel.AddAccountTransactionCommand.Execute();
+            }
+        }
+
+        private void ListBoxItemDoubleClick_Moneyboxes(object sender, RoutedEventArgs e)
+        {
+            BudgetViewModel viewModel = this.DataContext as BudgetViewModel;
+            if (viewModel != null)
+            {
+                viewModel.AddMoneyboxTransactionCommand.Execute();
+            }
+        }
     }
 }

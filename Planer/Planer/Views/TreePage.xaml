@@ -29,6 +29,20 @@
             </Setter>
         </Style>
 
+        <ContextMenu x:Key="MoneyboxesListBoxItemContextMenu">
+            <MenuItem Header="Unassign" Click="ContextMenu_UnassignMoneyboxItem_Click"/>
+        </ContextMenu>
+        
+        <Style x:Key="MoneyboxesListBoxStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=MoneyboxesListBoxItemContextMenu}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Page.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -60,6 +74,8 @@
                                 <MenuItem Header="Add" Click="ContextMenu_AddNewNodeItem_Click"/>
                                 <MenuItem Header="Edit" Click="ContextMenu_EditNodeItem_Click"/>
                                 <MenuItem Header="Remove" Click="ContextMenu_RemoveNodeItem_Click"/>
+                                <Separator/>
+                                <MenuItem Header="Assign moneybox" Click="ContextMenu_AssignMoneybox_Click"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <ProgressBar Value="{Binding Progress}" Minimum="0" Maximum="100" Foreground="#FF1B8711">
@@ -71,16 +87,22 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Grid Grid.Column="1" Visibility="{Binding SelectedItem, Converter={StaticResource ResourceKey=IsObjectNotNullToVisibilityConverter}}"
+        <Grid Grid.Column="1" Margin="0,-20,0,0" Visibility="{Binding SelectedItem, Converter={StaticResource ResourceKey=IsObjectNotNullToVisibilityConverter}}"
               Background="#FFEEEEEE">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                <Button Content="Add New Task" Command="{Binding AddTaskToNodeCommand}"
-                        Margin="0,-20,0,0"/>
+                <Button Content="Add New Task" Command="{Binding AddTaskToNodeCommand}" />
             </StackPanel>
-            <TextBlock Text="{Binding Path=SelectedItem.Name}"/>
+            <Label Content="Taks" Grid.Row="1"/>
             <ListBox ItemsSource="{Binding Path=SelectedItem.Tasks}"
                      SelectedItem="{Binding Path=SelectedTask}"
-                     Margin="0,20,0,0" 
+                     Grid.Row="2"
                      Background="Transparent" BorderThickness="0"
                      Style="{StaticResource ResourceKey=TasksListBoxStyle}">
                 <ListBox.ContextMenu>
@@ -90,7 +112,32 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Text}" Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"/>
+                        <Grid Height="35" MinWidth="100">
+                            <TextBlock Text="{Binding Text}" 
+                                       Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"
+                                       VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding Deadline}" 
+                                       Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"
+                                       VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                            
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Label Content="Moneyboxes" Grid.Row="3"/>
+            <ListBox ItemsSource="{Binding Path=AssignedMoneyboxes}"
+                     SelectedItem="{Binding Path=SelectedMoneybox}"
+                     Grid.Row="4" Background="Transparent" BorderThickness="0"
+                     Style="{StaticResource ResourceKey=MoneyboxesListBoxStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="35" MinWidth="100">
+                            <TextBlock Text="{Binding Name}" 
+                                       VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            <TextBlock Text="{Binding Amount}"
+                                       VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

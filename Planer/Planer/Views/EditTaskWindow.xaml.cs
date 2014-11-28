@@ -35,6 +35,7 @@ namespace Planer.Views
                 v_ComboBox_TaskPriority.SelectedIndex = _currentTaskToEdit.Priority.HasValue ? _currentTaskToEdit.Priority.Value : 4;
                 v_ComboBox_TaskState.SelectedIndex = _currentTaskToEdit.State;
                 v_TextBox_TaskText.Text = _currentTaskToEdit.Text;
+                v_DatePicker_Deadline.SelectedDate = _currentTaskToEdit.Deadline;
             }
             else
             {
@@ -52,6 +53,7 @@ namespace Planer.Views
                 _currentTaskToEdit.Text = v_TextBox_TaskText.Text;
                 _currentTaskToEdit.Priority = priority;
                 _currentTaskToEdit.State = v_ComboBox_TaskState.SelectedIndex;
+                _currentTaskToEdit.Deadline = v_DatePicker_Deadline.SelectedDate;
 
                 _taskRepository.Edit(_currentTaskToEdit);
 

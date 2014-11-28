@@ -76,6 +76,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\packages\Extended WPF Toolkit Binaries\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -90,12 +93,24 @@
     <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\ViewHelper.cs" />
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\NodeItemModel.cs" />
+    <Compile Include="ViewModels\AccountHistoryViewModel.cs" />
     <Compile Include="ViewModels\BudgetViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IPage.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\TasksListViewModel.cs" />
     <Compile Include="ViewModels\TreeViewModel.cs" />
+    <Compile Include="Views\AccountHistoryWindow.xaml.cs">
+      <DependentUpon>AccountHistoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MoneyboxesChooserWindow.xaml.cs">
+      <DependentUpon>MoneyboxesChooserWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewTransactionWindow.xaml.cs">
+      <DependentUpon>NewTransactionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BudgetPage.xaml.cs">
       <DependentUpon>BudgetPage.xaml</DependentUpon>
     </Compile>
@@ -129,6 +144,18 @@
     <Compile Include="Views\TreePage.xaml.cs">
       <DependentUpon>TreePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AccountHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MoneyboxesChooserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewTransactionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BudgetPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -233,6 +260,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{54c723bc-e129-4187-8813-8b58a3eb3d36}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Universal\Universal.csproj">
+      <Project>{614b0e6c-541e-4e2e-b69a-2deddc1a3992}</Project>
+      <Name>Universal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

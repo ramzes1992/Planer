@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Planer.Views.NewAccountWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="" Height="96" Width="222"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="" Height="123" Width="222"
         FocusManager.FocusedElement="{Binding ElementName=v_TextBox_AccountName}"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -11,13 +12,19 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Label Content="Name: " HorizontalAlignment="Right" VerticalAlignment="Top"/>
+        <Label Name="v_Label_Capacity"  Content="Capacity: " HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1"/>
+        
+        <TextBox TextChanged="v_TextBox_AccountName_TextChanged" Name="v_TextBox_AccountName" Grid.Column="1" VerticalAlignment="Top" Margin="5" TabIndex="0"/>
+        <xctk:DecimalUpDown Name="v_DecimalUpDown" Grid.Column="1" Grid.Row="1" 
+                            VerticalAlignment="Top" Margin="5"
+                            Value="0" Minimum="0" FormatString="N2"
+                            Visibility="{Binding ElementName=v_Label_Capacity, Path=Visibility}"/>
 
-        <TextBox TextChanged="v_TextBox_AccountName_TextChanged" Name="v_TextBox_AccountName" Grid.Column="1" VerticalAlignment="Top" Margin="5"/>
-
-        <Button Name="v_Button_Create" IsEnabled="False" Click="Button_Click" VerticalAlignment="Center" IsDefault="True" HorizontalAlignment="Center" Content="Create" Grid.Column="1" Grid.Row="1" />
+        <Button Name="v_Button_Create" IsEnabled="False" Click="Button_Click" VerticalAlignment="Center" IsDefault="True" HorizontalAlignment="Center" Content="Create" Grid.Column="1" Grid.Row="2" />
     </Grid>
 </Window>

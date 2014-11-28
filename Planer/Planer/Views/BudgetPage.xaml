@@ -10,10 +10,14 @@
     <Page.Resources>
         <ContextMenu x:Key="ListBoxItemContextMenu_Accounts">
             <MenuItem Header="Remove" Click="ListBoxItemContextMenu_RemoveAccountClick"/>
+            <MenuItem Header="Show History" Click="ListBoxItemContextMenu_ShowAccountHistoryClick"/>
+            <MenuItem Header="Add Transaction" Click="ListBoxItemContextMenu_AddTransactionToAccountClick"/>
         </ContextMenu>
 
         <ContextMenu x:Key="ListBoxItemContextMenu_Moneyboxes">
             <MenuItem Header="Remove" Click="ListBoxItemContextMenu_RemoveMoneyboxClick"/>
+            <MenuItem Header="Show History" Click="ListBoxItemContextMenu_ShowMoneyboxHistoryClick"/>
+            <MenuItem Header="Add Transaction" Click="ListBoxItemContextMenu_AddTransactionToMoneyboxClick"/>
         </ContextMenu>
 
         <Style x:Key="AccountsListBoxStyle" TargetType="ListBox">
@@ -21,6 +25,7 @@
                 <Setter.Value>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItemContextMenu_Accounts}"/>
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItemDoubleClick_Accounts"/>
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -31,6 +36,7 @@
                 <Setter.Value>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItemContextMenu_Moneyboxes}"/>
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItemDoubleClick_Moneyboxes"/>
                     </Style>
                 </Setter.Value>
             </Setter>

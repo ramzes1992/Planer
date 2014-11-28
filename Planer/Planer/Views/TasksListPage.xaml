@@ -7,7 +7,7 @@
       xmlns:converters="clr-namespace:Planer.Converters"
       xmlns:helpers="clr-namespace:Planer.Helpers"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="600"
+      d:DesignHeight="400" d:DesignWidth="800"
 	  Title="TasksListPage">
     <Page.Resources>
 
@@ -127,21 +127,21 @@
                          PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
                          Tag="ImportantAndUrgent" >
                 </ListBox>-->
-                <ListView Name="v_ListView_Tasks"
+                <ListView Name="v_ListView_ImportantAndUrgentTasks"
                           ItemsSource="{Binding ImportantAndUrgentTasks}"
                           Style="{StaticResource ResourceKey=ListViewStyle}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="200" DisplayMemberBinding="{Binding Text}">
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Text}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Tag="Text" Content="Text" Click="v_ListView_TasksColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                    <GridViewColumnHeader Tag="Text" Content="Text" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
-                            <!--<GridViewColumn Width="60" DisplayMemberBinding="{Binding State}">
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding Deadline}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Tag="State" Content="State:" Click="v_ListView_TasksColumnHeader_Click" />
+                                    <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
                                 </GridViewColumn.Header>
-                            </GridViewColumn>-->
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -152,11 +152,29 @@
             <Grid >
                 <Label Content="Important And Not Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="II"/>
-                <ListBox ItemsSource="{Binding ImportantAndNotUrgentTasks}" 
+                <!--<ListBox ItemsSource="{Binding ImportantAndNotUrgentTasks}" 
                          Style="{StaticResource ResourceKey=ListBoxStyle}"
                          PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
                          Tag="ImportantAndNotUrgent">
-                </ListBox>
+                </ListBox>-->
+                <ListView Name="v_ListView_ImportantAndNotUrgentTasks"
+                          ItemsSource="{Binding ImportantAndNotUrgentTasks}"
+                          Style="{StaticResource ResourceKey=ListViewStyle}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Text}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Text" Content="Text" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding Deadline}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
         </Border>
 
@@ -164,11 +182,29 @@
             <Grid>
                 <Label Content="Not Important And Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="III"/>
-                <ListBox ItemsSource="{Binding NotImportantAndUrgentTasks}" 
+                <!--<ListBox ItemsSource="{Binding NotImportantAndUrgentTasks}" 
                          Style="{StaticResource ResourceKey=ListBoxStyle}"
                          PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
                          Tag="NotImportantAndUrgent">
-                </ListBox>
+                </ListBox>-->
+                <ListView Name="v_ListView_NotImportantAndUrgentTasks"
+                          ItemsSource="{Binding NotImportantAndUrgentTasks}"
+                          Style="{StaticResource ResourceKey=ListViewStyle}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Text}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Text" Content="Text" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding Deadline}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
         </Border>
 
@@ -176,11 +212,29 @@
             <Grid>
                 <Label Content="Not Important And Not Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="IV"/>
-                <ListBox ItemsSource="{Binding NotImportantAndNotUrgentTasks}" 
+                <!--<ListBox ItemsSource="{Binding NotImportantAndNotUrgentTasks}" 
                          Style="{StaticResource ResourceKey=ListBoxStyle}"
                          PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
                          Tag="NotImportantAndNotUrgent">
-                </ListBox>
+                </ListBox>-->
+                <ListView Name="v_ListView_NotImportantAndNotUrgentTasks"
+                          ItemsSource="{Binding NotImportantAndNotUrgentTasks}"
+                          Style="{StaticResource ResourceKey=ListViewStyle}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Text}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Text" Content="Text" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding Deadline}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
         </Border>
 

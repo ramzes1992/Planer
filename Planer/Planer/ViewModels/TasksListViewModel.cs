@@ -12,7 +12,7 @@ using Planer.Views;
 
 namespace Planer.ViewModels
 {
-    public class TasksListViewModel : BaseViewModel
+    public class TasksListViewModel : BaseViewModel, IPage
     {
         #region Properties
 
@@ -212,5 +212,10 @@ namespace Planer.ViewModels
         }
 
         #endregion
+
+        public void Refresh()
+        {
+            RefreshLists();
+        }
     }
 }

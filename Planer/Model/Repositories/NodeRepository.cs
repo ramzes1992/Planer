@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Universal;
+
 namespace Model.Repositories
 {
     public class NodeRepository : BaseRepository
@@ -64,7 +66,7 @@ namespace Model.Repositories
         {
             var entry = Entities.Entry(node);
             if (entry.CurrentValues.PropertyNames.Any(p => entry.Property(p).IsModified
-                                                           && p.Equals("Progress")))
+                                                           && p.Equals(ReflectionHelper.NameOf(() => node.Progress))))
             {
                 RecalculateProgresses(node);
             }

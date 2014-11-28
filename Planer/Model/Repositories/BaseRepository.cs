@@ -26,11 +26,11 @@ namespace Model.Repositories
 
         private static int GetProgressFlat(Node root)
         {
-            if (root.Children.Any() || root.Tasks.Any())
+            if (root.Children.Any() || root.Tasks.Any() || root.Accounts.Any())
             {
                 int progress = 0;
 
-                int itemsCount = root.Children.Count + root.Tasks.Count; // can't be equals 0;
+                int itemsCount = root.Children.Count + root.Tasks.Count + root.Accounts.Count; // can't be equals 0;
 
                 foreach (var node in root.Children)
                 {
@@ -45,10 +45,18 @@ namespace Model.Repositories
                     }
                 }
 
+                foreach (var moneybox in root.Accounts)
+                {
+                    if (moneybox.Transactions.Sum(t => t.Amount) + moneybox.Startup >= 0)
+                    {
+                        progress += 100;
+                    }
+                }
+
                 return (int)(progress / itemsCount);
             }
 
-            return 0;
+            return root.Progress;
         }
     }
 }

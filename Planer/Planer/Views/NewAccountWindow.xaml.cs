@@ -45,9 +45,11 @@ namespace Planer.Views
             {
                 case AccountType.Account:
                     Title = "New Account";
+                    v_Label_Capacity.Visibility = System.Windows.Visibility.Hidden;
                     break;
                 case AccountType.Moneybox:
                     Title = "New MoneyBox";
+                    v_Label_Capacity.Visibility = System.Windows.Visibility.Visible;
                     break;
                 default:
                     break;
@@ -60,12 +62,27 @@ namespace Planer.Views
             {
                 if (_currentProject != null)
                 {
-                    _accountRepository.Add(new Account()
+                    var account = new Account()
                     {
                         Name = v_TextBox_AccountName.Text,
                         Project = _currentProject,
                         Type = (int)_currentType
-                    });
+                    };
+                    
+
+                    if (_currentType.Equals(AccountType.Moneybox) 
+                        && v_DecimalUpDown.Value.HasValue 
+                        && v_DecimalUpDown.Value.Value > 0)
+                    {
+                        account.Startup = -(v_DecimalUpDown.Value.Value);
+                    }
+                    else
+                    {
+                        account.Startup = 0;
+                    }
+
+                    _accountRepository.Add(account);
+
                     this.DialogResult = true;
                     Close();
                 }

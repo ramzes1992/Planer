@@ -10,20 +10,24 @@ using Model.Repositories;
 using Microsoft.Practices.Prism.Commands;
 using Planer.Views;
 using Model.Enums;
+using Planer.Models;
+using System.Linq.Expressions;
+using Planer.Helpers;
+using Universal;
 
 namespace Planer.ViewModels
 {
-    public class BudgetViewModel : BaseViewModel
+    public class BudgetViewModel : BaseViewModel, IPage
     {
         #region Properties
 
         #region Accounts
-        public ObservableCollection<Account> Accounts { get; set; }
+        public ObservableCollection<AccountModel> Accounts { get; set; }
         #endregion
 
         #region Selected Account
-        private Account _selectedAccount;
-        public Account SelectedAccount
+        private AccountModel _selectedAccount;
+        public AccountModel SelectedAccount
         {
             get
             {
@@ -42,12 +46,12 @@ namespace Planer.ViewModels
         #endregion
 
         #region Moneyboxes
-        public ObservableCollection<Account> Moneyboxes { get; set; }
+        public ObservableCollection<AccountModel> Moneyboxes { get; set; }
         #endregion
 
         #region Selected Moneybox
-        private Account _selectedMoneybox;
-        public Account SelectedMoneybox
+        private AccountModel _selectedMoneybox;
+        public AccountModel SelectedMoneybox
         {
             get
             {
@@ -76,6 +80,12 @@ namespace Planer.ViewModels
 
             AddMoneyboxCommad = new DelegateCommand(AddMoneyboxExecute);
             RemoveMoneyboxCommand = new DelegateCommand(RemoveMoneyboxExecute);
+
+            ShowAccountHistoryCommand = new DelegateCommand(ShowAccountHistoryExecute);
+            ShowMoneyboxHistoryCommand = new DelegateCommand(ShowMoneyboxHistoryExecute);
+
+            AddAccountTransactionCommand = new DelegateCommand(AddAccountTransactionExecute);
+            AddMoneyboxTransactionCommand = new DelegateCommand(AddMoneyboxTransactionExecute);
         }
 
         #region Add Account
@@ -98,7 +108,7 @@ namespace Planer.ViewModels
         {
             if (SelectedAccount != null)
             {
-                _accountRepository.Remove(SelectedAccount);
+                _accountRepository.Remove(_accountRepository.GetById(SelectedAccount.Id));
                 RefreshLists();
             }
         }
@@ -124,10 +134,81 @@ namespace Planer.ViewModels
         {
             if (SelectedMoneybox != null)
             {
-                _accountRepository.Remove(SelectedMoneybox);
+                _accountRepository.Remove(_accountRepository.GetById(SelectedMoneybox.Id));
                 RefreshLists();
             }
         }
+        #endregion
+
+        #region Show History
+
+        private void ShowHistory(int AccountId)
+        {
+            var viewModel = new AccountHistoryViewModel(_accountRepository.GetById(AccountId));
+            viewModel.PropertyChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) =>
+            {
+                if (e.PropertyName.Equals(ReflectionHelper.NameOf(() => viewModel.Transactions)))
+                {
+                    RefreshLists();
+                }
+            };
+            AccountHistoryWindow view = new AccountHistoryWindow();
+            view.DataContext = viewModel;
+            view.ShowDialog();
+        }
+
+        public DelegateCommand ShowAccountHistoryCommand { get; set; }
+        private void ShowAccountHistoryExecute()
+        {
+            if (SelectedAccount != null)
+            {
+                ShowHistory(SelectedAccount.Id);
+            }
+        }
+
+        public DelegateCommand ShowMoneyboxHistoryCommand { get; set; }
+        private void ShowMoneyboxHistoryExecute()
+        {
+            if (SelectedMoneybox != null)
+            {
+                ShowHistory(SelectedMoneybox.Id);
+            }
+        }
+
+        #endregion
+
+        #region Add New Transaction
+
+        public DelegateCommand AddAccountTransactionCommand { get; set; }
+
+        private void AddAccountTransactionExecute()
+        {
+            if (SelectedAccount != null)
+            {
+                NewTransactionWindow view = new NewTransactionWindow(_accountRepository.GetById(SelectedAccount.Id));
+                var result = view.ShowDialog();
+                if (result ?? false)
+                {
+                    RefreshLists();
+                }
+            }
+        }
+
+        public DelegateCommand AddMoneyboxTransactionCommand { get; set; }
+
+        private void AddMoneyboxTransactionExecute()
+        {
+            if (SelectedMoneybox != null)
+            {
+                NewTransactionWindow view = new NewTransactionWindow(_accountRepository.GetById(SelectedMoneybox.Id));
+                var result = view.ShowDialog();
+                if (result ?? false)
+                {
+                    RefreshLists();
+                }
+            }
+        }
+
         #endregion
 
         #endregion
@@ -155,14 +236,35 @@ namespace Planer.ViewModels
         #region Provate Methods
         private void RefreshLists()
         {
-            this.Accounts = new ObservableCollection<Account>(_currentProject.Accounts
-                .Where(a => a.Type.Equals((int)AccountType.Account)));
+            this.Accounts = new ObservableCollection<AccountModel>(GetAccounts()
+                .Where(a => a.Type.Equals(AccountType.Account)));
             RaisePropertyChanged(() => Accounts);
 
-            this.Moneyboxes = new ObservableCollection<Account>(_currentProject.Accounts
-                .Where(a => a.Type.Equals((int)AccountType.Moneybox)));
+            this.Moneyboxes = new ObservableCollection<AccountModel>(GetAccounts()
+                .Where(a => a.Type.Equals(AccountType.Moneybox)));
             RaisePropertyChanged(() => Moneyboxes);
         }
+
+        private IEnumerable<AccountModel> GetAccounts()
+        {
+            if (_currentProject != null)
+            {
+                return _currentProject.Accounts.Select(a => new AccountModel()
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Amount = _accountRepository.GetAmount(a),
+                    Type = (AccountType)a.Type
+                });
+            }
+
+            return null;
+        }
         #endregion
+
+        public void Refresh()
+        {
+            RefreshLists();
+        }
     }
 }

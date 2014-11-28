@@ -89,5 +89,25 @@ namespace Planer.Views
                 viewModel.RemoveTaskCommand.Execute();
             }
         }
+
+        private void ContextMenu_AssignMoneybox_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (TreeViewModel)this.DataContext;
+
+            if (viewModel != null)
+            {
+                viewModel.AssignMoneyboxCommand.Execute();
+            }
+        }
+
+        private void ContextMenu_UnassignMoneyboxItem_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = (TreeViewModel)this.DataContext;
+
+            if (viewModel != null)
+            {
+                viewModel.UnassignMoneyboxCommand.Execute();
+            }
+        }
     }
 }

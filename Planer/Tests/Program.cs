@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.Threading;
 using System.Diagnostics;
 
+using Universal;
+
 namespace Tests
 {
     public static class Program

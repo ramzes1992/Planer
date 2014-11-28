@@ -25,17 +25,16 @@ namespace Planer.Views
         TaskRepository _taskRepository = new TaskRepository();
         Project _currentProject;
         Node _currentNode;
-        public NewTaskWindow(Project currentProject, EisenhowerPriority? startUpPriority = null)
-        {
-            this._currentProject = currentProject;
-            InitializeComponent();
-        }
-
-        public NewTaskWindow(Project currentProject, Node currentNode)
+        public NewTaskWindow(Project currentProject, Node currentNode = null, EisenhowerPriority? startUpPriority = null)
         {
             this._currentProject = currentProject;
             this._currentNode = currentNode;
             InitializeComponent();
+
+            if(startUpPriority.HasValue && (int)startUpPriority.Value < 4)
+            {
+                v_ComboBox_TaskPriority.SelectedIndex = (int)startUpPriority;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -49,7 +48,8 @@ namespace Planer.Views
                     Text = v_TextBox_TaskText.Text,
                     Project = _currentProject,
                     Node = _currentNode,
-                    Priority = priority
+                    Priority = priority,
+                    Deadline = v_DatePicker_Deadline.SelectedDate
                 };
 
                 _taskRepository.Add(task);

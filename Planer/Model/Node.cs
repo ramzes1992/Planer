@@ -19,6 +19,7 @@ namespace Model
             this.Children = new HashSet<Node>();
             this.Permissions = new HashSet<Permission>();
             this.Tasks = new HashSet<Task>();
+            this.Accounts = new HashSet<Account>();
         }
     
         public int Id { get; set; }
@@ -32,5 +33,6 @@ namespace Model
         public virtual Project Project { get; set; }
         public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Account> Accounts { get; set; }
     }
 }

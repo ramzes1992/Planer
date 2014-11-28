@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests
+namespace Universal
 {
     public static class Extensions
     {
@@ -22,6 +22,11 @@ namespace Tests
             {
                 action(i);
             }
+        }
+
+        public static bool IsNull(this object source)
+        {
+            return source != null;
         }
     }
 }

@@ -21,10 +21,12 @@ namespace Model
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Amount { get; set; }
         public int ProjectId { get; set; }
         public int Type { get; set; }
+        public Nullable<int> NodeId { get; set; }
+        public decimal Startup { get; set; }
     
+        public virtual Node Node { get; set; }
         public virtual Project Project { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
     }

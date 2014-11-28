@@ -41,8 +41,6 @@ namespace Planer.Views
             }
         }
 
-        
-
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = (MenuItem)sender;
@@ -98,14 +96,21 @@ namespace Planer.Views
         private GridViewColumnHeader listViewSortCol = null;
         private SortAdorner listViewSortAdorner = null;
 
-        private void v_ListView_TasksColumnHeader_Click(object sender, RoutedEventArgs e)
+        private void v_ListView_ColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            var listView = Helpers.ViewHelper.VisualUpwardSearch<ListView>(e.OriginalSource as DependencyObject);
+
+            ColumnHeader_Click(sender, e, listView);
+        }
+
+        private void ColumnHeader_Click(object sender, RoutedEventArgs e, ListView listView)
         {
             GridViewColumnHeader column = (sender as GridViewColumnHeader);
             string sortBy = column.Tag.ToString();
             if (listViewSortCol != null)
             {
                 AdornerLayer.GetAdornerLayer(listViewSortCol).Remove(listViewSortAdorner);
-                v_ListView_Tasks.Items.SortDescriptions.Clear();
+                listView.Items.SortDescriptions.Clear();
             }
 
             ListSortDirection newDir = ListSortDirection.Ascending;
@@ -115,7 +120,7 @@ namespace Planer.Views
             listViewSortCol = column;
             listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
             AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
-            v_ListView_Tasks.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
+            listView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
     }
 

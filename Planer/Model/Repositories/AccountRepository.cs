@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Universal;
 
 namespace Model.Repositories
 {
@@ -18,12 +19,17 @@ namespace Model.Repositories
             return Entities.Accounts.SingleOrDefault(a => a.Id.Equals(Id));
         }
 
-        public void Add(Account acconut)
+        public void Add(Account account)
         {
-            if (acconut != null)
+            if (account != null)
             {
-                Entities.Accounts.Add(acconut);
+                Entities.Accounts.Add(account);
                 Entities.SaveChanges();
+
+                if (account.Node != null)
+                {
+                    RecalculateProgresses(account.Node);
+                }
             }
         }
 
@@ -31,7 +37,7 @@ namespace Model.Repositories
         {
             if (account != null)
             {
-                return account.Transactions.Sum(t => t.Amount);
+                return account.Transactions.Sum(t => t.Amount) + account.Startup;
             }
 
             return 0;
@@ -42,12 +48,28 @@ namespace Model.Repositories
             return GetAmount(GetById(accountId));
         }
 
+        public void Edit(Account account)
+        {
+            Entities.SaveChanges();
+
+            if (account.Node != null)
+            {
+                RecalculateProgresses(account.Node);
+            }
+        }
+
         public void Remove(Account account)
         {
             if (account != null)
             {
+                Entities.Transactions.RemoveRange(account.Transactions);
                 Entities.Accounts.Remove(account);
                 Entities.SaveChanges();
+
+                if (account.Node != null)
+                {
+                    RecalculateProgresses(account.Node);
+                }
             } 
         }
 

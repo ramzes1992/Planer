@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStyle="ToolWindow"
-        Title="Edit Task Window" Height="154" Width="281"
+        Title="Edit Task Window" Height="187" Width="281"
         WindowStartupLocation="CenterScreen"
         FocusManager.FocusedElement="{Binding ElementName=v_TextBox_TaskText}">
     <Grid>
@@ -14,12 +14,14 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Label Content="Text: " HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <Label Content="Priority: " HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="1"/>
         <Label Content="State: " HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2"/>
+        <Label Content="Deadline: " HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3"/>
 
         <TextBox TextChanged="v_TextBox_TaskText_TextChanged" Name="v_TextBox_TaskText" Grid.Column="1" VerticalAlignment="Top" Margin="5"/>
         <ComboBox Name="v_ComboBox_TaskPriority" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Margin="5">
@@ -35,7 +37,9 @@
             <ComboBoxItem Content="Work In Progress" />
             <ComboBoxItem Content="Done" />
         </ComboBox>
+
+        <DatePicker Name="v_DatePicker_Deadline" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Margin="2"/>
         
-        <Button Name="v_Button_Edit" IsEnabled="False" Click="Button_Click" VerticalAlignment="Center" IsDefault="True" HorizontalAlignment="Center" Content="Edit" Grid.Column="1" Grid.Row="3" />
+        <Button Name="v_Button_Edit" IsEnabled="False" Click="Button_Click" VerticalAlignment="Center" IsDefault="True" HorizontalAlignment="Center" Content="Edit" Grid.Column="1" Grid.Row="4" />
     </Grid>
 </Window>

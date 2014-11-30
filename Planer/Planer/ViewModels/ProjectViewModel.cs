@@ -23,6 +23,10 @@ namespace Planer.ViewModels
 
         #endregion
 
+        #region SheredProjects
+        public ObservableCollection<Project> SheredProjects { get; set; }
+        #endregion
+
         #region Selected Project
         private Project _selectedProject;
         public Project SelectedProject
@@ -79,6 +83,14 @@ namespace Planer.ViewModels
 
         #region Commands
 
+        #region
+        private void InitializeCommands()
+        {
+            OpenProjectCommand = new DelegateCommand(OpenProjectExecute, OpenProjectCanExecute);
+            CreateNewProjectCommand = new DelegateCommand(CreateNewProjectExecute, CreateNewProjectCanExecute);
+        }
+        #endregion
+
         #region Open Project Command
         public DelegateCommand OpenProjectCommand { get; set; }
 
@@ -127,16 +139,18 @@ namespace Planer.ViewModels
 
         #endregion
 
+        #region Ctor
         public ProjectViewModel(User user, Window view)
         {
             this._currentUser = user;
             this._view = view;
 
-            OpenProjectCommand = new DelegateCommand(OpenProjectExecute, OpenProjectCanExecute);
-            CreateNewProjectCommand = new DelegateCommand(CreateNewProjectExecute, CreateNewProjectCanExecute);
+            InitializeCommands();
 
             Projects = new ObservableCollection<Project>(_currentUser.Projects);
+            SheredProjects = new ObservableCollection<Project>(_currentUser.Collaborators.Select(c => c.Project));
         }
-        
+        #endregion
+
     }
 }

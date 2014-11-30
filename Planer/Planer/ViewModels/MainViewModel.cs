@@ -31,6 +31,7 @@ namespace Planer.ViewModels
                 {
                     _currentUser = value;
                     RaisePropertyChanged(() => CurrentUser);
+                    ManageProjectCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -63,6 +64,8 @@ namespace Planer.ViewModels
                     {//project is closed
                         CurrentPage = null;
                     }
+
+                    ManageProjectCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -117,6 +120,22 @@ namespace Planer.ViewModels
 
         #region Commands
 
+        #region Initialize Commands
+
+        private void InitializeCommands()
+        {
+            OpenProjectCommand = new DelegateCommand(OpenProjectExecute);
+            NewProjectCommand = new DelegateCommand(NewProjectExecute);
+            CloseProjectCommand = new DelegateCommand(CloseProjectExecute);
+            ManageProjectCommand = new DelegateCommand(ManageProjectExecute, ManageProjectCanExecute);
+
+            NavigateToTreePageCommand = new DelegateCommand(NavigateToTreePageExecute);
+            NavigateToTasksListPageCommand = new DelegateCommand(NavigateToTasksListPageExecute);
+            NavigateToBudgetPageCommand = new DelegateCommand(NavigateToBudgetPageExecute);
+        }
+
+        #endregion
+
         #region Menu Open Project
         public DelegateCommand OpenProjectCommand { get; set; }
         private void OpenProjectExecute()
@@ -156,6 +175,32 @@ namespace Planer.ViewModels
         private void CloseProjectExecute()
         {
             CurrentProject = null;
+        }
+        #endregion
+
+        #region Menu Manage Project
+        public DelegateCommand ManageProjectCommand { get; set; }
+
+        private void ManageProjectExecute()
+        {
+            CollaboratorsWindow view = new CollaboratorsWindow(CurrentUser, CurrentProject);
+
+            var result = view.ShowDialog();
+            //if (result ?? false)
+            //{
+                
+            //}
+        }
+
+        private bool ManageProjectCanExecute()
+        {
+            if(CurrentProject != null
+                && CurrentProject.Owner.Equals(CurrentUser))
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
 
@@ -202,13 +247,7 @@ namespace Planer.ViewModels
         {
             _currentUser = _userRepository.GetUserByName(currentUserName);
 
-            OpenProjectCommand = new DelegateCommand(OpenProjectExecute);
-            NewProjectCommand = new DelegateCommand(NewProjectExecute);
-            CloseProjectCommand = new DelegateCommand(CloseProjectExecute);
-
-            NavigateToTreePageCommand = new DelegateCommand(NavigateToTreePageExecute);
-            NavigateToTasksListPageCommand = new DelegateCommand(NavigateToTasksListPageExecute);
-            NavigateToBudgetPageCommand = new DelegateCommand(NavigateToBudgetPageExecute);
+            InitializeCommands();
 
         }
 

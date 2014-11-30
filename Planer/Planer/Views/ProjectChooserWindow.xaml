@@ -8,13 +8,27 @@
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <TabControl>
+            <TabItem Header="My Projects">
+                <ListBox ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+            <TabItem Header="Shered">
+                <ListBox ItemsSource="{Binding SheredProjects}" SelectedItem="{Binding SelectedProject}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+        </TabControl>
+        
         <StackPanel Grid.Column="1">
             <Button Command="{Binding OpenProjectCommand}" Content="Open Project" Margin="0,5"/>
         </StackPanel>

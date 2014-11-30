@@ -38,13 +38,18 @@ namespace Model.Repositories
         {
             if(transaction != null)
             {
+                Node tmpNode = null;
+                if(transaction.Account != null)
+                {
+                    tmpNode = transaction.Account.Node;
+                }
+
                 Entities.Transactions.Remove(transaction);
                 Entities.SaveChanges();
 
-                if (transaction.Account != null
-                    && transaction.Account.Node != null)
+                if (tmpNode != null)
                 {
-                    RecalculateProgresses(transaction.Account.Node);
+                    RecalculateProgresses(tmpNode);
                 }
             }
         }

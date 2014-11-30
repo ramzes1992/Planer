@@ -26,7 +26,7 @@ namespace Universal
 
         public static bool IsNull(this object source)
         {
-            return source != null;
+            return source == null;
         }
     }
 }

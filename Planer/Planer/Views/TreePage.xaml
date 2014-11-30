@@ -99,7 +99,7 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                 <Button Content="Add New Task" Command="{Binding AddTaskToNodeCommand}" />
             </StackPanel>
-            <Label Content="Taks" Grid.Row="1"/>
+            <Label Content="Tasks" Grid.Row="1"/>
             <ListBox ItemsSource="{Binding Path=SelectedItem.Tasks}"
                      SelectedItem="{Binding Path=SelectedTask}"
                      Grid.Row="2"
@@ -134,7 +134,7 @@
                         <Grid Height="35" MinWidth="100">
                             <TextBlock Text="{Binding Name}" 
                                        VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                            <TextBlock Text="{Binding Amount}"
+                            <TextBlock Text="{Binding Amount, StringFormat=N2}"
                                        VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
 
                         </Grid>

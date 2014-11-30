@@ -16,17 +16,15 @@ namespace Model
     {
         public User()
         {
-            this.Collaborators = new HashSet<Collaborator>();
-            this.Permissions = new HashSet<Permission>();
             this.Projects = new HashSet<Project>();
+            this.Collaborators = new HashSet<Collaborator>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
     
-        public virtual ICollection<Collaborator> Collaborators { get; set; }
-        public virtual ICollection<Permission> Permissions { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Collaborator> Collaborators { get; set; }
     }
 }

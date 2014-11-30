@@ -1,0 +1,42 @@
+﻿<Window x:Class="Planer.Views.CollaboratorsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CollaboratorsWindow" Height="300" Width="300"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <ContextMenu x:Key="ListBoxItem_CotextMenu">
+            <MenuItem Header="Remove" Click="ListBoxItemContextMenu_RemoveCollaboratorClick"/>
+        </ContextMenu>
+        
+        <Style x:Key="CollaboratorsListBoxStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource ResourceKey=ListBoxItem_CotextMenu}"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Name="v_ListBox_Collaborators" 
+                 SelectionChanged="v_ListBox_Collaborators_SelectionChanged"
+                 Style="{StaticResource ResourceKey=CollaboratorsListBoxStyle}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="25" MinWidth="120">
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1">
+            <Button Name="v_Button_Add" Click="Button_Click" Content="Add" Margin="0,5"/>
+        </StackPanel>
+    </Grid>
+</Window>

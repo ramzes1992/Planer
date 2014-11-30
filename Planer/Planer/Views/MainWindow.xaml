@@ -18,6 +18,9 @@
                 <MenuItem Header="New Project" Command="{Binding NewProjectCommand}"/>
                 <MenuItem Header="Close Project" Command="{Binding CloseProjectCommand}" 
                           IsEnabled="{Binding CurrentProject, TargetNullValue=false}"/>
+                <Separator/>
+                <MenuItem Header="Manage" Command="{Binding ManageProjectCommand}" 
+                          IsEnabled="{Binding CurrentProject, TargetNullValue=false}"/>
             </MenuItem>
         </Menu>
         <Grid Margin="0,20,0,0">

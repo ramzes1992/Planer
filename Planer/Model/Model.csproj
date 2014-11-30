@@ -77,12 +77,6 @@
     <Compile Include="Node.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Permission.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PermissionType.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Project.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

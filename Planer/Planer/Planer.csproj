@@ -105,6 +105,9 @@
     <Compile Include="Views\AccountHistoryWindow.xaml.cs">
       <DependentUpon>AccountHistoryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CollaboratorsWindow.xaml.cs">
+      <DependentUpon>CollaboratorsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MoneyboxesChooserWindow.xaml.cs">
       <DependentUpon>MoneyboxesChooserWindow.xaml</DependentUpon>
     </Compile>
@@ -144,7 +147,14 @@
     <Compile Include="Views\TreePage.xaml.cs">
       <DependentUpon>TreePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserChooserWindow.xaml.cs">
+      <DependentUpon>UserChooserWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\AccountHistoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollaboratorsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TreePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserChooserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

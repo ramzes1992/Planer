@@ -50,5 +50,11 @@ namespace Model.Repositories
             }
         }
 
+        public void Edit(Project project)
+        {
+            // ???
+            Entities.SaveChanges();
+        }
+
     }
 }

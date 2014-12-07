@@ -44,11 +44,21 @@ namespace Tests
 
             //Console.WriteLine("Async Complete! time: {0}", sp.Elapsed.ToString());
 
-            10.Times((i) => { Console.WriteLine("some text: {0}", i); });
+            //10.Times((i) => { Console.WriteLine("some text: {0}", i); });
+
+            //Console.ReadKey();
+
+            Console.WriteLine("Podaj Imię:");
+            var imie = Console.ReadLine();
+
+            Console.WriteLine("Cześć " + imie);
+
+            Console.WriteLine("Podaj rok urodzenia:");
+            var rokUrodzenia = Console.ReadLine();
+
+            Console.WriteLine("Masz {0} lat", DateTime.Now.Year - int.Parse(rokUrodzenia));
 
             Console.ReadKey();
-
-
         }
 
         static void calc(int i)

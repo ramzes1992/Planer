@@ -12,8 +12,8 @@
         <converters:IsObjectNullToVisibilityConverter x:Key="IsObjectNullToVisibilityConverter" />
     </Window.Resources>
     <Grid>
-        <Menu VerticalAlignment="Top">
-            <MenuItem Header="Projects">
+        <Menu VerticalAlignment="Top" Margin="0,0,20,0">
+            <MenuItem Header="Projects" >
                 <MenuItem Header="Open Project" Command="{Binding OpenProjectCommand}"/>
                 <MenuItem Header="New Project" Command="{Binding NewProjectCommand}"/>
                 <MenuItem Header="Close Project" Command="{Binding CloseProjectCommand}" 
@@ -21,8 +21,10 @@
                 <Separator/>
                 <MenuItem Header="Manage" Command="{Binding ManageProjectCommand}" 
                           IsEnabled="{Binding CurrentProject, TargetNullValue=false}"/>
+                
             </MenuItem>
         </Menu>
+        <Button Command="{Binding RefreshContextCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Height="20" Width="20" Content="R"/>
         <Grid Margin="0,20,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>

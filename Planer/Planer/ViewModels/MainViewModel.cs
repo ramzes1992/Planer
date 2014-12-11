@@ -132,6 +132,8 @@ namespace Planer.ViewModels
             NavigateToTreePageCommand = new DelegateCommand(NavigateToTreePageExecute);
             NavigateToTasksListPageCommand = new DelegateCommand(NavigateToTasksListPageExecute);
             NavigateToBudgetPageCommand = new DelegateCommand(NavigateToBudgetPageExecute);
+
+            RefreshContextCommand = new DelegateCommand(RefreshContextExecute);
         }
 
         #endregion
@@ -238,6 +240,16 @@ namespace Planer.ViewModels
             view.DataContext = _budgetViewModel;
             CurrentPage = view;
         }
+        #endregion
+
+        #region RefreshContextCommand
+        public DelegateCommand RefreshContextCommand { get; set; }
+
+        private void RefreshContextExecute()
+        {
+            BaseRepository.RefreshContext();
+        }
+
         #endregion
 
         #endregion

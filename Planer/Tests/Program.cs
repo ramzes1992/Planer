@@ -49,14 +49,14 @@ namespace Tests
             //Console.ReadKey();
 
             Console.WriteLine("Podaj Imię:");
-            var imie = Console.ReadLine();
+            var name = Console.ReadLine();
 
-            Console.WriteLine("Cześć " + imie);
+            Console.WriteLine("Cześć " + name);
 
             Console.WriteLine("Podaj rok urodzenia:");
-            var rokUrodzenia = Console.ReadLine();
+            var inputYear = Console.ReadLine();
 
-            Console.WriteLine("Masz {0} lat", DateTime.Now.Year - int.Parse(rokUrodzenia));
+            Console.WriteLine("Masz {0} lat", DateTime.Now.Year - int.Parse(inputYear));
 
             Console.ReadKey();
         }

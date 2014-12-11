@@ -52,7 +52,7 @@
         </Grid.ColumnDefinitions>
         <TreeView ItemsSource="{Binding TopLevelNodes}" 
                   PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown"
-                  BorderThickness="0">
+                  BorderThickness="0" Margin="0,0,0,100">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="True"/>
@@ -80,7 +80,7 @@
                         </Grid.ContextMenu>
                         <ProgressBar Value="{Binding Progress}" Minimum="0" Maximum="100" Foreground="#FF1B8711">
                         </ProgressBar>
-                        <TextBlock Text="{Binding Name}" VerticalAlignment="Top"/>
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Top" Margin="10,0"/>
                         <TextBlock Text="{Binding Progress, StringFormat={}{0} %}" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                     </Grid>
                 </HierarchicalDataTemplate>

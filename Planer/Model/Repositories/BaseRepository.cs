@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 
 using Model.Enums;
+using System.Data.Entity.Core.Objects;
 
 namespace Model.Repositories
 {
     public class BaseRepository
     {
-        protected static readonly PlanerDatabaseEntities Entities = new PlanerDatabaseEntities();
+        protected static PlanerDatabaseEntities Entities = new PlanerDatabaseEntities();
+
+        public static void RefreshContext()
+        {
+            Entities = new PlanerDatabaseEntities();
+        }
 
         protected static void RecalculateProgresses(Node child)
         {

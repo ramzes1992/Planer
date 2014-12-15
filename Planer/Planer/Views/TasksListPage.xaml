@@ -74,36 +74,6 @@
                     </Style>
                 </Setter.Value>
             </Setter>
-            <!--<Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Text}"  Foreground="{Binding State, Converter={StaticResource ResourceKey=TaskSateToColorConverter}}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Status}"/>
-                        </Grid>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>-->
-            <!--<Setter Property="View">
-                <Setter.Value>
-                    <GridView>
-                        <GridViewColumn Width="120" DisplayMemberBinding="{Binding Text}">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Tag="Text" Click="v_ListView_TasksColumnHeader_Click">Text</GridViewColumnHeader>
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn Width="Auto"  DisplayMemberBinding="{Binding State}">
-                            <GridViewColumn.Header>
-                                <GridViewColumnHeader Tag="State" Content="State:" Click="v_ListView_TasksColumnHeader_Click"/>
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                    </GridView>
-                </Setter.Value>
-            </Setter>-->
         </Style>
 
     </Page.Resources>
@@ -122,11 +92,6 @@
             <Grid>
                 <Label Content="Important And Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="I"/>
-                <!--<ListBox ItemsSource="{Binding ImportantAndUrgentTasks}" 
-                         Style="{StaticResource ResourceKey=ListBoxStyle}"
-                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
-                         Tag="ImportantAndUrgent" >
-                </ListBox>-->
                 <ListView Name="v_ListView_ImportantAndUrgentTasks"
                           ItemsSource="{Binding ImportantAndUrgentTasks}"
                           Style="{StaticResource ResourceKey=ListViewStyle}">
@@ -142,6 +107,11 @@
                                     <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding CreatedAt}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="CreatedAt" Content="Created At" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -152,11 +122,6 @@
             <Grid >
                 <Label Content="Important And Not Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="II"/>
-                <!--<ListBox ItemsSource="{Binding ImportantAndNotUrgentTasks}" 
-                         Style="{StaticResource ResourceKey=ListBoxStyle}"
-                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
-                         Tag="ImportantAndNotUrgent">
-                </ListBox>-->
                 <ListView Name="v_ListView_ImportantAndNotUrgentTasks"
                           ItemsSource="{Binding ImportantAndNotUrgentTasks}"
                           Style="{StaticResource ResourceKey=ListViewStyle}">
@@ -172,6 +137,11 @@
                                     <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding CreatedAt}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="CreatedAt" Content="Created At" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -182,11 +152,6 @@
             <Grid>
                 <Label Content="Not Important And Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="III"/>
-                <!--<ListBox ItemsSource="{Binding NotImportantAndUrgentTasks}" 
-                         Style="{StaticResource ResourceKey=ListBoxStyle}"
-                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
-                         Tag="NotImportantAndUrgent">
-                </ListBox>-->
                 <ListView Name="v_ListView_NotImportantAndUrgentTasks"
                           ItemsSource="{Binding NotImportantAndUrgentTasks}"
                           Style="{StaticResource ResourceKey=ListViewStyle}">
@@ -202,6 +167,11 @@
                                     <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding CreatedAt}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="CreatedAt" Content="Created At" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -212,11 +182,6 @@
             <Grid>
                 <Label Content="Not Important And Not Urgent" Style="{StaticResource ResourceKey=LabelStyle}"/>
                 <Label FontSize="80" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="LightGray" Content="IV"/>
-                <!--<ListBox ItemsSource="{Binding NotImportantAndNotUrgentTasks}" 
-                         Style="{StaticResource ResourceKey=ListBoxStyle}"
-                         PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown"
-                         Tag="NotImportantAndNotUrgent">
-                </ListBox>-->
                 <ListView Name="v_ListView_NotImportantAndNotUrgentTasks"
                           ItemsSource="{Binding NotImportantAndNotUrgentTasks}"
                           Style="{StaticResource ResourceKey=ListViewStyle}">
@@ -230,6 +195,11 @@
                             <GridViewColumn Width="80" DisplayMemberBinding="{Binding Deadline}">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Tag="Deadline" Content="Deadline" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="80" DisplayMemberBinding="{Binding CreatedAt}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Tag="CreatedAt" Content="Created At" Click="v_ListView_ColumnHeader_Click" HorizontalAlignment="Stretch"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                         </GridView>

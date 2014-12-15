@@ -21,8 +21,9 @@ namespace Model
         public int ProjectId { get; set; }
         public Nullable<int> Priority { get; set; }
         public Nullable<System.DateTime> Deadline { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
     
-        public virtual Project Project { get; set; }
         public virtual Node Node { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

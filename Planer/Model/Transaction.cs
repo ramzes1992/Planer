@@ -18,6 +18,7 @@ namespace Model
         public int AccountId { get; set; }
         public string Text { get; set; }
         public decimal Amount { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Account Account { get; set; }
     }

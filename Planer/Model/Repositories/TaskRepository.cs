@@ -22,6 +22,8 @@ namespace Model.Repositories
 
         public void Add(Task task)
         {
+            task.CreatedAt = DateTime.Now;
+
             Entities.Tasks.Add(task);
             Entities.SaveChanges();
 

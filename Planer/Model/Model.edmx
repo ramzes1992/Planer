@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PlanerDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PlanerDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Accounts">
           <Key>
             <PropertyRef Name="Id" />
@@ -53,6 +53,7 @@
           <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="Priority" Type="int" />
           <Property Name="Deadline" Type="datetime" />
+          <Property Name="CreatedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="Transactions">
           <Key>
@@ -62,6 +63,7 @@
           <Property Name="AccountId" Type="int" Nullable="false" />
           <Property Name="Text" Type="nvarchar(max)" />
           <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -245,16 +247,11 @@
     <edmx:ConceptualModels>
       <Schema Namespace="PlanerDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="PlanerDatabaseEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Tasks" EntityType="PlanerDatabaseModel.Task" />
           <EntitySet Name="Users" EntityType="PlanerDatabaseModel.User" />
           <EntitySet Name="Projects" EntityType="PlanerDatabaseModel.Project" />
           <AssociationSet Name="FK_Projects_Users" Association="PlanerDatabaseModel.FK_Projects_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tasks_Projects" Association="PlanerDatabaseModel.FK_Tasks_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Task" EntitySet="Tasks" />
           </AssociationSet>
           <EntitySet Name="Nodes" EntityType="PlanerDatabaseModel.Node" />
           <AssociationSet Name="FK_Nodes_Nodes" Association="PlanerDatabaseModel.FK_Nodes_Nodes">
@@ -265,11 +262,6 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="Node" EntitySet="Nodes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tasks_Nodes" Association="PlanerDatabaseModel.FK_Tasks_Nodes">
-            <End Role="Node" EntitySet="Nodes" />
-            <End Role="Task" EntitySet="Tasks" />
-          </AssociationSet>
-          <EntitySet Name="Transactions" EntityType="PlanerDatabaseModel.Transaction" />
           <EntitySet Name="Accounts" EntityType="PlanerDatabaseModel.Account" />
           <AssociationSet Name="FK_Accounts_Nodes" Association="PlanerDatabaseModel.FK_Accounts_Nodes">
             <End Role="Node" EntitySet="Nodes" />
@@ -278,10 +270,6 @@
           <AssociationSet Name="FK_Accounts_Projects" Association="PlanerDatabaseModel.FK_Accounts_Projects">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Account" EntitySet="Accounts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Transactions_Accounts" Association="PlanerDatabaseModel.FK_Transactions_Accounts">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Transaction" EntitySet="Transactions" />
           </AssociationSet>
           <EntitySet Name="Collaborators" EntityType="PlanerDatabaseModel.Collaborator" />
           <AssociationSet Name="FK_Collaborators_Projects" Association="PlanerDatabaseModel.FK_Collaborators_Projects">
@@ -292,21 +280,21 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Collaborator" EntitySet="Collaborators" />
           </AssociationSet>
+          <EntitySet Name="Tasks" EntityType="PlanerDatabaseModel.Task" />
+          <EntitySet Name="Transactions" EntityType="PlanerDatabaseModel.Transaction" />
+          <AssociationSet Name="FK_Transactions_Accounts" Association="PlanerDatabaseModel.FK_Transactions_Accounts">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Nodes" Association="PlanerDatabaseModel.FK_Tasks_Nodes">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Projects" Association="PlanerDatabaseModel.FK_Tasks_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Task" EntitySet="Tasks" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="Task">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="Int32" Nullable="false" />
-          <Property Name="NodeId" Type="Int32" />
-          <Property Name="ProjectId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Tasks_Projects" FromRole="Task" ToRole="Project" />
-          <NavigationProperty Name="Node" Relationship="PlanerDatabaseModel.FK_Tasks_Nodes" FromRole="Task" ToRole="Node" />
-          <Property Name="Priority" Type="Int32" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -325,10 +313,10 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OwnerId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Owner" Relationship="PlanerDatabaseModel.FK_Projects_Users" FromRole="Project" ToRole="User" />
-          <NavigationProperty Name="Tasks" Relationship="PlanerDatabaseModel.FK_Tasks_Projects" FromRole="Project" ToRole="Task" />
           <NavigationProperty Name="Nodes" Relationship="PlanerDatabaseModel.FK_Nodes_Projects" FromRole="Project" ToRole="Node" />
           <NavigationProperty Name="Accounts" Relationship="PlanerDatabaseModel.FK_Accounts_Projects" FromRole="Project" ToRole="Account" />
           <NavigationProperty Name="Collaborators" Relationship="PlanerDatabaseModel.FK_Collaborators_Projects" FromRole="Project" ToRole="Collaborator" />
+          <NavigationProperty Name="Tasks" Relationship="PlanerDatabaseModel.FK_Tasks_Projects" FromRole="Project" ToRole="Task" />
         </EntityType>
         <Association Name="FK_Projects_Users">
           <End Type="PlanerDatabaseModel.User" Role="User" Multiplicity="1" />
@@ -339,18 +327,6 @@
             </Principal>
             <Dependent Role="Project">
               <PropertyRef Name="OwnerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tasks_Projects">
-          <End Type="PlanerDatabaseModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="PlanerDatabaseModel.Task" Role="Task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Task">
-              <PropertyRef Name="ProjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -366,8 +342,8 @@
           <NavigationProperty Name="Children" Relationship="PlanerDatabaseModel.FK_Nodes_Nodes" FromRole="Node" ToRole="Node1" />
           <NavigationProperty Name="Parent" Relationship="PlanerDatabaseModel.FK_Nodes_Nodes" FromRole="Node1" ToRole="Node" />
           <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Nodes_Projects" FromRole="Node" ToRole="Project" />
-          <NavigationProperty Name="Tasks" Relationship="PlanerDatabaseModel.FK_Tasks_Nodes" FromRole="Node" ToRole="Task" />
           <NavigationProperty Name="Accounts" Relationship="PlanerDatabaseModel.FK_Accounts_Nodes" FromRole="Node" ToRole="Account" />
+          <NavigationProperty Name="Tasks" Relationship="PlanerDatabaseModel.FK_Tasks_Nodes" FromRole="Node" ToRole="Task" />
           </EntityType>
         <Association Name="FK_Nodes_Nodes">
           <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="0..1" />
@@ -393,28 +369,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Tasks_Nodes">
-          <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="0..1" />
-          <End Type="PlanerDatabaseModel.Task" Role="Task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Node">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Task">
-              <PropertyRef Name="NodeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Transaction">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountId" Type="Int32" Nullable="false" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <NavigationProperty Name="Account" Relationship="PlanerDatabaseModel.FK_Transactions_Accounts" FromRole="Transaction" ToRole="Account" />
-        </EntityType>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
@@ -426,8 +380,8 @@
           <Property Name="NodeId" Type="Int32" />
           <NavigationProperty Name="Node" Relationship="PlanerDatabaseModel.FK_Accounts_Nodes" FromRole="Account" ToRole="Node" />
           <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Accounts_Projects" FromRole="Account" ToRole="Project" />
-          <NavigationProperty Name="Transactions" Relationship="PlanerDatabaseModel.FK_Transactions_Accounts" FromRole="Account" ToRole="Transaction" />
           <Property Name="Startup" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Transactions" Relationship="PlanerDatabaseModel.FK_Transactions_Accounts" FromRole="Account" ToRole="Transaction" />
         </EntityType>
         <Association Name="FK_Accounts_Nodes">
           <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="0..1" />
@@ -450,18 +404,6 @@
             </Principal>
             <Dependent Role="Account">
               <PropertyRef Name="ProjectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Transactions_Accounts">
-          <End Type="PlanerDatabaseModel.Account" Role="Account" Multiplicity="1" />
-          <End Type="PlanerDatabaseModel.Transaction" Role="Transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Transaction">
-              <PropertyRef Name="AccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -499,25 +441,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <Property Name="NodeId" Type="Int32" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Node" Relationship="PlanerDatabaseModel.FK_Tasks_Nodes" FromRole="Task" ToRole="Node" />
+          <NavigationProperty Name="Project" Relationship="PlanerDatabaseModel.FK_Tasks_Projects" FromRole="Task" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountId" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Account" Relationship="PlanerDatabaseModel.FK_Transactions_Accounts" FromRole="Transaction" ToRole="Account" />
+        </EntityType>
+        <Association Name="FK_Transactions_Accounts">
+          <End Type="PlanerDatabaseModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Nodes">
+          <End Type="PlanerDatabaseModel.Node" Role="Node" Multiplicity="0..1" />
+          <End Type="PlanerDatabaseModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Projects">
+          <End Type="PlanerDatabaseModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="PlanerDatabaseModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PlanerDatabaseModelStoreContainer" CdmEntityContainer="PlanerDatabaseEntities">
-          <EntitySetMapping Name="Tasks">
-            <EntityTypeMapping TypeName="PlanerDatabaseModel.Task">
-              <MappingFragment StoreEntitySet="Tasks">
-                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="PlanerDatabaseModel.User">
               <MappingFragment StoreEntitySet="Users">
@@ -547,16 +538,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Transactions">
-            <EntityTypeMapping TypeName="PlanerDatabaseModel.Transaction">
-              <MappingFragment StoreEntitySet="Transactions">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="PlanerDatabaseModel.Account">
               <MappingFragment StoreEntitySet="Accounts">
@@ -574,6 +555,31 @@
               <MappingFragment StoreEntitySet="Collaborators">
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tasks">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Task">
+              <MappingFragment StoreEntitySet="Tasks">
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="PlanerDatabaseModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

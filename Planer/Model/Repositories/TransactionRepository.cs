@@ -22,6 +22,7 @@ namespace Model.Repositories
         {
             if (transaction != null)
             {
+                transaction.Date = DateTime.Now;
                 Entities.Transactions.Add(transaction);
                 Entities.SaveChanges();
 

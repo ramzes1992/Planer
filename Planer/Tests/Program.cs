@@ -22,43 +22,43 @@ namespace Tests
 
         static void Main(string[] args)
         {
-            //Stopwatch sp = new Stopwatch();
+            Stopwatch sp = new Stopwatch();
 
-            //sp.Start();
+            sp.Start();
 
-            //for(int i = 0; i < int.MaxValue; i++)
-            //{
-            //    calc(i);
-            //}
-            //sp.Stop();
+            for (int i = 0; i < int.MaxValue; i++)
+            {
+                calc(i);
+            }
+            sp.Stop();
 
-            //Console.WriteLine("Sync Complete! time: {0}", sp.Elapsed.ToString());
-            
-            
-            //sp.Restart();
-            //Parallel.For(0, int.MaxValue, (i) =>
-            //{
-            //   calc(i);
-            //});
-            //sp.Stop();
+            Console.WriteLine("Sync Complete! time: {0}", sp.Elapsed.ToString());
 
-            //Console.WriteLine("Async Complete! time: {0}", sp.Elapsed.ToString());
+
+            sp.Restart();
+            Parallel.For(0, int.MaxValue, (i) =>
+            {
+                calc(i);
+            });
+            sp.Stop();
+
+            Console.WriteLine("Async Complete! time: {0}", sp.Elapsed.ToString());
 
             //10.Times((i) => { Console.WriteLine("some text: {0}", i); });
 
-            //Console.ReadKey();
-
-            Console.WriteLine("Podaj Imię:");
-            var name = Console.ReadLine();
-
-            Console.WriteLine("Cześć " + name);
-
-            Console.WriteLine("Podaj rok urodzenia:");
-            var inputYear = Console.ReadLine();
-
-            Console.WriteLine("Masz {0} lat", DateTime.Now.Year - int.Parse(inputYear));
-
             Console.ReadKey();
+
+            //Console.WriteLine("Podaj Imię:");
+            //var name = Console.ReadLine();
+
+            //Console.WriteLine("Cześć " + name);
+
+            //Console.WriteLine("Podaj rok urodzenia:");
+            //var inputYear = Console.ReadLine();
+
+            //Console.WriteLine("Masz {0} lat", DateTime.Now.Year - int.Parse(inputYear));
+
+            //Console.ReadKey();
         }
 
         static void calc(int i)

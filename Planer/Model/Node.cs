@@ -17,8 +17,8 @@ namespace Model
         public Node()
         {
             this.Children = new HashSet<Node>();
-            this.Tasks = new HashSet<Task>();
             this.Accounts = new HashSet<Account>();
+            this.Tasks = new HashSet<Task>();
         }
     
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace Model
         public virtual ICollection<Node> Children { get; set; }
         public virtual Node Parent { get; set; }
         public virtual Project Project { get; set; }
-        public virtual ICollection<Task> Tasks { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }
